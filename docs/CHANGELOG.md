@@ -1,13 +1,13 @@
 ## GPF Changelog
 
 The intent of this changelog is to keep everyone in the loop about
-what's new in the **YOUR_PROJECT_NAME**  project. It is a curated,
+what's new in the **fortran_cubatures**  project. It is a curated,
 chronologically ordered list of notable changes including records
 of change such as bug fixes, new features, changes, and relevant
 notifications.
 
 ---
-**2015-12-21**  YOUR_FIRSTNAME  YOUR_LASTNAME  <https://github.com/YOUR_SITE_NAME/YOUR_REPOSITORY_NAME>
+**2025-09-04**  Will Klausler  <https://github.com/willklausler/fortran_cubatures>
 
 ### :green_circle: ADD:
      initial release
