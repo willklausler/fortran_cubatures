@@ -1,14 +1,14 @@
 # TOML file for fpm as described at https://fpm.fortran-lang.org/en/spec/manifest.html
-name = "easy"
+name = "fortran_cubatures"
 version = "0.1.0"
 license = "license"
-author = "Jane Doe"
-maintainer = "jane.doe@example.com"
-copyright = "Copyright 2021, Jane Doe"
+author = "Will Klausler"
+maintainer = "wklausler@protonmail.com"
+copyright = "Copyright 2025, Will Klausler"
 description = ""
 categories = [""]
 keywords = ["fortran", "fortran-package-manager"]
-homepage = "https://github.com/janedoe/easy"
+homepage = "https://github.com/willklausler/fortran_cubatures"
 
 [build]
    auto-executables = true
