@@ -33,6 +33,9 @@ homepage = "https://github.com/willklausler/fortran_cubatures"
 [install]
    library = false
 
+#[profile.debug]
+#   fflags = "-g -O0 -Wall"
+
 # example
 #[[test]]
 #name="runTests"
