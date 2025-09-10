@@ -2,7 +2,7 @@
 
 ## About
 
-Numerical integration derived type for finite elements in
+Numerical integration - primarily Gaußian integration - derived type for finite elements in
 
 - 1D - lineature, line elements,
 - 2D - quadrature, triangle and quadrilateral elements, and
@@ -43,9 +43,5 @@ call scheme%show()
 ```
 
 ## To do
-
-- Unit testing for prisms
-
-- Polynomial integration testing with non-separable functions
 
 - Anisotropic integration for quadrilaterals, hexahedrons, and prisms
