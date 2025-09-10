@@ -10,7 +10,7 @@
     <meta name="author" content="Will Klausler" >
     <link rel="icon" href="../favicon.png">
 
-    <title>ipolynomial &ndash; fortran_cubatures</title>
+    <title>factorial &ndash; fortran_cubatures</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -80,7 +80,7 @@
 
     <div class="container">
   <div class="row">
-    <h1>ipolynomial
+    <h1>factorial
       <small>Function</small>
       
     </h1>
@@ -91,7 +91,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="35.5% of total for procedures.">11 statements</a>
+                 title=" 6.4% of total for procedures.">8 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -105,7 +105,7 @@
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/cubatures_test.f90.html'>cubatures_test.f90</a></li>
                 <li class="breadcrumb-item"><a href='../program/cubatures_test.html'>cubatures_test</a></li>
-            <li class="breadcrumb-item active" aria-current="page">ipolynomial</li>
+            <li class="breadcrumb-item active" aria-current="page">factorial</li>
           </ol>
         </nav>
       </div>
@@ -133,9 +133,7 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../proc/ipolynomial.html#variable-i~3">i</a>
-            <a class="list-group-item" href="../proc/ipolynomial.html#variable-xhi">xhi</a>
-            <a class="list-group-item" href="../proc/ipolynomial.html#variable-xlo">xlo</a>
+            <a class="list-group-item" href="../proc/factorial.html#variable-i~11">i</a>
         </div>
       </div>
     </div>
@@ -161,7 +159,7 @@
     <div class="card card-primary">
       <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
       <div class="list-group">
-        <a class="list-group-item" href="../proc/ipolynomial.html#src">ipolynomial</a>
+        <a class="list-group-item" href="../proc/factorial.html#src">factorial</a>
       </div>
     </div>
 
@@ -171,13 +169,11 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>pure function ipolynomial(c, o) result(v)  
+    <h2>pure elemental function factorial(n) result(f)  
 </h2>
     
 
-    <p>Evaluate polynomial integral over domain [xlo, xhi] with coefficients
-c to order o
-v = sum_i=1^o+1 c_i/i<em>xhi^i - c_i</em>xlo^i</p>
+    <p>Basic factorial function</p>
 
 
     <h3>Arguments</h3>
@@ -193,22 +189,7 @@ v = sum_i=1^o+1 c_i/i<em>xhi^i - c_i</em>xlo^i</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-c~2"></span>
-              real(kind=rk),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>c</strong>(10)</td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-o~2"></span>
+              <span class="anchor" id="variable-n~2"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -216,7 +197,7 @@ v = sum_i=1^o+1 c_i/i<em>xhi^i - c_i</em>xlo^i</p>
               
             </td>
             <td>::</td>
-            <td><strong>o</strong></td>
+            <td><strong>n</strong></td>
             <td>
                 
             </td>
@@ -226,8 +207,8 @@ v = sum_i=1^o+1 c_i/i<em>xhi^i - c_i</em>xlo^i</p>
 
       <h3>Return Value
         <small>
-          <span class="anchor" id="variable-v~2"></span>
-          real(kind=rk)
+          <span class="anchor" id="variable-f"></span>
+          integer
         </small>
       </h3>
       
@@ -248,7 +229,7 @@ v = sum_i=1^o+1 c_i/i<em>xhi^i - c_i</em>xlo^i</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-i~3"></span>
+              <span class="anchor" id="variable-i~11"></span>
               integer,
             </td>
               <td>public</td>
@@ -259,40 +240,6 @@ v = sum_i=1^o+1 c_i/i<em>xhi^i - c_i</em>xlo^i</p>
             <td><strong>i</strong></td>
                 <td></td>
                 <td></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-xhi"></span>
-              real(kind=rk),
-            </td>
-              <td>public,</td>
-            <td>
-parameter               
-            </td>
-            <td>::</td>
-            <td><strong>xhi</strong></td>
-<td> =</td>
-                <td>1</td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-xlo"></span>
-              real(kind=rk),
-            </td>
-              <td>public,</td>
-            <td>
-parameter               
-            </td>
-            <td>::</td>
-            <td><strong>xlo</strong></td>
-<td> =</td>
-                <td>-1</td>
             <td>
                 
             </td>
@@ -313,20 +260,15 @@ parameter
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="hl codehilite"><pre><span></span><span class="k">pure function </span><span class="n">ipolynomial</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"></span>
-<span class="c">!! Evaluate polynomial integral over domain [xlo, xhi] with coefficients</span>
-<span class="c">!! c to order o</span>
-<span class="c">!! v = sum_i=1^o+1 c_i/i*xhi^i - c_i*xlo^i</span>
-<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">o</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">v</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">),</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xlo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">xhi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+    <div class="hl codehilite"><pre><span></span><span class="k">pure elemental </span><span class="kt">integer </span><span class="k">function </span><span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"></span>
+<span class="c">!! Basic factorial function</span>
+<span class="w">  </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
 <span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
-<span class="w">  </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">o</span><span class="o">+</span><span class="mi">1</span><span class="w"></span>
-<span class="w">    </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">xhi</span><span class="o">**</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">xlo</span><span class="o">**</span><span class="n">i</span><span class="p">)</span><span class="o">/</span><span class="n">i</span><span class="w"></span>
+<span class="w">  </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="w"></span>
+<span class="w">    </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="o">*</span><span class="n">i</span><span class="w"></span>
 <span class="w">  </span><span class="k">end do</span><span class="w"> </span><span class="c">! i</span>
-<span class="k">end function </span><span class="n">ipolynomial</span><span class="w"></span>
+<span class="k">end function </span><span class="n">factorial</span><span class="w"></span>
 </pre></div>
 
     </section>
@@ -350,7 +292,7 @@ parameter
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-09-05 14:51 +0000             </p>
+ on 2025-09-10 07:48 +0000             </p>
           </div>
         </div>
         <br>

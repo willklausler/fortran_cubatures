@@ -1,13 +1,11 @@
 module cubatures
 !! Define cubature derived type
 
-  use iso_fortran_env, only: ik => int32, rk => real64, stdout => output_unit
+  use iso_fortran_env, only: rk => real64, stdout => output_unit
 
   implicit none
 
   private
-
-  public :: ik, rk
 
   character(3), parameter :: elmtypes(*) = &
     [ "LIN",   "TRI",   "QUA",    "TET",  "HEX",  "WEJ"]
@@ -16,25 +14,34 @@ module cubatures
     [2.0_rk, 1.0_rk/2, 4.0_rk, 1.0_rk/6, 8.0_rk, 1.0_rk]
 
   integer, parameter :: maxorders(*) = &
-    [     5,        3,      5,        3,      5,      2]
+    [     5,        3,      5,        3,      5,      3]
 
   public :: elmtypes, volumes, maxorders
 
   type :: Cubature
     !! This derived type holds data, weights, and abscissae for numerical
-    !! integration of 2D (triangle, quadrilaterals) and 3D bodies (tetrahedra,
-    !! hexahedra, and wedges)
+    !! integration of 2D (triangle, quadrilaterals) and 3D bodies (tetrahedrons,
+    !! hexahedrons, and wedges)
     !!
-    !! Note: Cubatures for tetrahedra use body coordinates, and the condition
-    !!       x1 + x2 + x3 + x4 = 1 permits the elimination of the final
-    !!       coordinate
+    !! Note: Cubatures for triangles and tetrahedrons use body coordinates,
+    !! and the condition x1 + x2 + x3 (+ x4) = 1 permits the elimination of
+    !! the final coordinate. For wedges, the first two coordinates are body,
+    !! the last is ordinary.
+    !!
+    !! Domains:
+    !! LINear - [-1, 1]
+    !! QUAdrilateral - [-1, 1] x [-1, 1]
+    !! TRIangle - [0, 1] x [0, 1-x]
+    !! HEXahedron - [-1, 1] x [-1, 1] x [-1, 1]
+    !! TETrahedron - [0, 1] x [0, 1-x] x [0, 1-x-y]
+    !! WEJ/prism - [0, 1] x [0, 1-x] x [-1, 1]
 
-    character(3) :: elmtype = ""      !! Element type: TRI, QUA, TET, HEX, WEJ
-    integer(ik) :: dime = 0        !! Element dimension
-    integer(ik) :: orders(3) = 0   !! Order of cubature
-    integer(ik) :: points = 0      !! Number of cubature points
-    real(rk), allocatable :: abscissae(:,:)    !! Abscissae (coordinates)
-    real(rk), allocatable :: weights(:)        !! Weights
+    character(3) :: elmtype = ""              !! Element type: TRI, QUA, TET, HEX, WEJ
+    integer :: dime = 0                       !! Element dimension
+    integer :: orders(3) = 0                  !! Order of cubature
+    integer :: points = 0                     !! Number of cubature points
+    real(rk), allocatable :: abscissae(:,:)   !! Abscissae (coordinates)
+    real(rk), allocatable :: weights(:)       !! Weights
 
     integer :: ounit = stdout
 
@@ -92,7 +99,7 @@ subroutine show(self)
 
   class(Cubature), intent(in) :: self
 
-  integer(ik) :: i
+  integer :: i
 
   character(*), parameter :: fmt0 = "*(G0,:,', ')"
   character(*), parameter :: fmt1 = "(I3,')',1x,"//fmt0//")"
@@ -203,10 +210,10 @@ pure subroutine set(self, elmtype,order)
 
   class(Cubature), intent(inout) :: self
   character(3), intent(in) :: elmtype       !! Element type: TRI, QUA, TET, HEX, WEJ
-  integer(ik), intent(in) :: order(:)    !! Cubature order: size 1 or dimension
+  integer, intent(in) :: order(:)    !! Cubature order: size 1 or dimension
 
-  integer(ik) :: i, j, k     !! Iterators
-  integer(ik) :: n           !! Index of abscissae
+  integer :: i, j, k     !! Iterators
+  integer :: n           !! Index of abscissae
 
   ! Wipe any existing data
   call self%destroy()
@@ -509,7 +516,7 @@ pure subroutine set(self, elmtype,order)
         self%abscissae(1:2,:) = 1.0_rk/3
         self%abscissae(  3,:) = abscissae
 
-        self%weights = weights/2
+        self%weights = 0.5_rk*weights
 
       end block
 
@@ -539,9 +546,44 @@ pure subroutine set(self, elmtype,order)
         self%abscissae(3,4:6) = abscissae(2)
         self%abscissae(3,7:9) = abscissae(3)
 
-        self%weights(1:3) = weights(1)/6
-        self%weights(4:6) = weights(2)/6
-        self%weights(7:9) = weights(3)/6
+        self%weights(1:3) = 1.0_rk/6*weights(1)
+        self%weights(4:6) = 1.0_rk/6*weights(2)
+        self%weights(7:9) = 1.0_rk/6*weights(3)
+
+      end block
+
+    ! 16-Point wedge cubature
+    case (3)
+
+      self%points = 16
+
+      allocate(self%abscissae(1:3,1:self%points))
+      allocate(self%weights(1:self%points))
+
+      block
+        real(rk) :: abscissae(4)
+        real(rk) :: weights(4)
+
+        call gauss(4, abscissae,weights)
+
+        do i = 1,4
+          self%abscissae(1:2,4*(i-1)+1) = 1.0_rk/3
+          self%abscissae(1:2,4*(i-1)+2) = [0.6_rk, 0.2_rk]
+          self%abscissae(1:2,4*(i-1)+3) = [0.2_rk, 0.6_rk]
+          self%abscissae(1:2,4*(i-1)+4) = 0.2_rk
+        end do ! i
+
+        self%abscissae(3, 1: 4) = abscissae(1)
+        self%abscissae(3, 5: 8) = abscissae(2)
+        self%abscissae(3, 9:12) = abscissae(3)
+        self%abscissae(3,13:16) = abscissae(4)
+
+        do i = 1,4
+          self%weights(4*(i-1)+1) = -27.0_rk/96*weights(i)
+          self%weights(4*(i-1)+2) =  25.0_rk/96*weights(i)
+          self%weights(4*(i-1)+3) =  25.0_rk/96*weights(i)
+          self%weights(4*(i-1)+4) =  25.0_rk/96*weights(i)
+        end do ! i
 
       end block
 
@@ -560,8 +602,8 @@ end subroutine set
 pure function counter(i,j,k,r) result(c)
 !! Count in base r - indexing starts at 1
 
-  integer(ik), intent(in) :: i, j, k, r(3)
-  integer(ik) :: c
+  integer, intent(in) :: i, j, k, r(3)
+  integer :: c
 
   c = r(2)*r(3)*(i-1) + r(3)*(j-1) + (k-1) + 1
 
@@ -572,7 +614,7 @@ end function counter
 pure subroutine gauss(order, abscissae,weights)
 !! Provide Gaussian lineature abscissae and weights given the order, for domain [-1, 1]
 
-  integer(ik), intent(in) :: order           !! Order of integration
+  integer, intent(in) :: order           !! Order of integration
   real(rk), intent(out) :: abscissae(order)  !! Abscissae (coordinates)
   real(rk), intent(out) :: weights(order)    !! Weights
 

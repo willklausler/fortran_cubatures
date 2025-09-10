@@ -90,7 +90,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="91.0% of total for programs.">172 statements</a>
+                 title="95.2% of total for programs.">338 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -133,13 +133,14 @@
         <div class="list-group list-group-flush">
             <a class="list-group-item" href="../program/cubatures_test.html#variable-anasol">anasol</a>
             <a class="list-group-item" href="../program/cubatures_test.html#variable-coeff">coeff</a>
-            <a class="list-group-item" href="../program/cubatures_test.html#variable-fmt1">fmt1</a>
-            <a class="list-group-item" href="../program/cubatures_test.html#variable-i">i</a>
-            <a class="list-group-item" href="../program/cubatures_test.html#variable-j">j</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#variable-fmt1~2">fmt1</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#variable-g">g</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#variable-h">h</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#variable-ind">ind</a>
             <a class="list-group-item" href="../program/cubatures_test.html#variable-maxo">maxo</a>
             <a class="list-group-item" href="../program/cubatures_test.html#variable-numsol">numsol</a>
             <a class="list-group-item" href="../program/cubatures_test.html#variable-ord">ord</a>
-            <a class="list-group-item" href="../program/cubatures_test.html#variable-order">order</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#variable-order~3">order</a>
             <a class="list-group-item" href="../program/cubatures_test.html#variable-poly">poly</a>
             <a class="list-group-item" href="../program/cubatures_test.html#variable-scheme~2">scheme</a>
             <a class="list-group-item" href="../program/cubatures_test.html#variable-vol">vol</a>
@@ -163,9 +164,18 @@
       </a>
       <div id="funcs-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../program/cubatures_test.html#proc-ipolynomial">ipolynomial</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#proc-factorial">factorial</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#proc-ipolycube">ipolycube</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#proc-ipolyline">ipolyline</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#proc-ipolysquare">ipolysquare</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#proc-ipolytet">ipolytet</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#proc-ipolytriangle">ipolytriangle</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#proc-ipolywedge">ipolywedge</a>
             <a class="list-group-item" href="../program/cubatures_test.html#proc-is_zero">is_zero</a>
-            <a class="list-group-item" href="../program/cubatures_test.html#proc-polynomial">polynomial</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#proc-polyfunc">polyfunc</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#proc-polyline">polyline</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#proc-polytet">polytet</a>
+            <a class="list-group-item" href="../program/cubatures_test.html#proc-polytri">polytri</a>
         </div>
       </div>
     </div>
@@ -198,6 +208,7 @@
             <li class="list-group-item">
               <ul class="list-inline">
                   <li class="list-inline-item"><a href='../module/cubatures.html'>cubatures</a></li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
               </ul>
             </li>
         </ul>
@@ -205,6 +216,17 @@
     </div>
 
     <p>Test cubatures</p>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
 <hr>
 <hr>
 <br>
@@ -246,7 +268,7 @@
               
             </td>
             <td>::</td>
-            <td><strong>coeff</strong>(10)</td>
+            <td><strong>coeff</strong>(10,10,10)</td>
                 <td></td>
                 <td></td>
             <td>
@@ -255,7 +277,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-fmt1"></span>
+              <span class="anchor" id="variable-fmt1~2"></span>
               character(len=*),
             </td>
             <td>
@@ -271,14 +293,14 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-i"></span>
+              <span class="anchor" id="variable-g"></span>
               integer
             </td>
             <td>
               
             </td>
             <td>::</td>
-            <td><strong>i</strong></td>
+            <td><strong>g</strong></td>
                 <td></td>
                 <td></td>
             <td>
@@ -287,14 +309,30 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-j"></span>
+              <span class="anchor" id="variable-h"></span>
               integer
             </td>
             <td>
               
             </td>
             <td>::</td>
-            <td><strong>j</strong></td>
+            <td><strong>h</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ind"></span>
+              integer
+            </td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ind</strong></td>
                 <td></td>
                 <td></td>
             <td>
@@ -351,7 +389,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-order"></span>
+              <span class="anchor" id="variable-order~3"></span>
               character(len=1)
             </td>
             <td>
@@ -427,13 +465,11 @@ parameter
     <section>
     <h2>Functions</h2>
       <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-ipolynomial"></span> <h3>pure function <a href='../proc/ipolynomial.html'>ipolynomial</a>(c, o) result(v)  
+    <div class="card-header codesum"><span class="anchor" id="proc-factorial"></span> <h3>pure elemental function <a href='../proc/factorial.html'>factorial</a>(n) result(f)  
 </h3></div>
     <div class="card-body">
           
-  <p>Evaluate polynomial integral over domain [xlo, xhi] with coefficients
-c to order o
-v = sum_i=1^o+1 c_i/i<em>xhi^i - c_i</em>xlo^i</p>
+  <p>Basic factorial function</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -448,7 +484,114 @@ v = sum_i=1^o+1 c_i/i<em>xhi^i - c_i</em>xlo^i</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-c~2"></span>
+              <span class="anchor" id="variable-n~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+      <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ipolycube"></span> <h3>pure function <a href='../proc/ipolycube.html'>ipolycube</a>(c, o) result(v)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Evaluate polynomial integral over cube domain</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-c~6"></span>
+              real(kind=rk),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>c</strong>(10,10,10)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-o~5"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>o</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>real(kind=rk)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+      <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ipolyline"></span> <h3>pure function <a href='../proc/ipolyline.html'>ipolyline</a>(c, o) result(v)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Evaluate polynomial integral over domain [xlo, xhi] with coefficients
+c to order o
+v = sum_i=0^o c_i*(xhi^i - xlo^i)/i</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-c~3"></span>
               real(kind=rk),
             </td>
 <td>intent(in)</td>
@@ -464,6 +607,246 @@ v = sum_i=1^o+1 c_i/i<em>xhi^i - c_i</em>xlo^i</p>
         <tr>
             <td>
               <span class="anchor" id="variable-o~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>o</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>real(kind=rk)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+      <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ipolysquare"></span> <h3>pure function <a href='../proc/ipolysquare.html'>ipolysquare</a>(c, o) result(v)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Evaluate polynomial integral over square domain</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-c~4"></span>
+              real(kind=rk),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>c</strong>(10,10)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-o~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>o</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>real(kind=rk)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+      <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ipolytet"></span> <h3>pure function <a href='../proc/ipolytet.html'>ipolytet</a>(c, o) result(v)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Evaluate polynomial integral over tetrahedral domain</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-c~7"></span>
+              real(kind=rk),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>c</strong>(10,10,10)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-o~6"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>o</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>real(kind=rk)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+      <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ipolytriangle"></span> <h3>pure function <a href='../proc/ipolytriangle.html'>ipolytriangle</a>(c, o) result(v)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Evaluate polynomial integral over triangular domain</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-c~5"></span>
+              real(kind=rk),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>c</strong>(10,10)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-o~4"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>o</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>real(kind=rk)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+      <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ipolywedge"></span> <h3>pure function <a href='../proc/ipolywedge.html'>ipolywedge</a>(c, o) result(v)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Evaluate polynomial integral over prismatic domain</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-c~8"></span>
+              real(kind=rk),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>c</strong>(10,10,10)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-o~7"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -508,7 +891,7 @@ v = sum_i=1^o+1 c_i/i<em>xhi^i - c_i</em>xlo^i</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-r"></span>
+              <span class="anchor" id="variable-r~2"></span>
               real(kind=rk),
             </td>
 <td>intent(in)</td>
@@ -534,12 +917,12 @@ v = sum_i=1^o+1 c_i/i<em>xhi^i - c_i</em>xlo^i</p>
   </div>
 
       <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-polynomial"></span> <h3>pure function <a href='../proc/polynomial.html'>polynomial</a>(c, x, o) result(v)  
+    <div class="card-header codesum"><span class="anchor" id="proc-polyfunc"></span> <h3>pure function <a href='../proc/polyfunc.html'>polyfunc</a>(c, x, y, z, o) result(v)  
 </h3></div>
     <div class="card-body">
           
-  <p>Evaluate polynomial at x with coefficients c to order o
-v = sum_i=1^o+1 c_i*x^(i-1)</p>
+  <p>Evaluate polynomial at x(3) with coefficients c to order o
+v = sum_i,j,k=0^{i+j+k=o} c_ijk<em>x^i</em>y^j*z^k</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -554,7 +937,7 @@ v = sum_i=1^o+1 c_i*x^(i-1)</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-c"></span>
+              <span class="anchor" id="variable-c~2"></span>
               real(kind=rk),
             </td>
 <td>intent(in)</td>
@@ -562,7 +945,7 @@ v = sum_i=1^o+1 c_i*x^(i-1)</p>
               
             </td>
             <td>::</td>
-            <td><strong>c</strong>(10)</td>
+            <td><strong>c</strong>(10,10,10)</td>
             <td>
 
             </td>
@@ -578,6 +961,36 @@ v = sum_i=1^o+1 c_i*x^(i-1)</p>
             </td>
             <td>::</td>
             <td><strong>x</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-y"></span>
+              real(kind=rk),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>y</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-z~2"></span>
+              real(kind=rk),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>z</strong></td>
             <td>
 
             </td>
@@ -609,6 +1022,189 @@ v = sum_i=1^o+1 c_i*x^(i-1)</p>
     </div>
   </div>
 
+      <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-polyline"></span> <h3>pure elemental function <a href='../proc/polyline.html'>polyline</a>(m) result(f)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Value of polynomial integral over linear domain
+int_-1^1 x^m dx</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-m~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>m</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>real(kind=rk)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+      <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-polytet"></span> <h3>pure elemental function <a href='../proc/polytet.html'>polytet</a>(m, n, p) result(f)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Value of polynomial integral over tetrahedral domain
+int_0^1 int_0^(1-x) int_0^(1-x-y) x^m<em>y^n</em>z^p dz dy dx</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-m~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>m</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~4"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-p"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>p</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>real(kind=rk)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+      <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-polytri"></span> <h3>pure elemental function <a href='../proc/polytri.html'>polytri</a>(m, n) result(f)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Value of polynomial integral over triangular domain
+int_0^1 int_0^(1-x) x^m*y^n dy dx</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-m"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>m</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>real(kind=rk)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
     </section>
     <br>
 
@@ -620,16 +1216,18 @@ v = sum_i=1^o+1 c_i*x^(i-1)</p>
     <div class="hl codehilite"><pre><span></span><span class="k">program </span><span class="n">cubatures_test</span><span class="w"></span>
 <span class="c">!! Test cubatures</span>
 
+<span class="w">  </span><span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">rk</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">real64</span><span class="w"></span>
 <span class="w">  </span><span class="k">use </span><span class="n">cubatures</span><span class="w"></span>
 
 <span class="w">  </span><span class="k">implicit none</span>
 
-<span class="k">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"></span>
+<span class="k">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="n">h</span><span class="w"></span>
+<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ind</span><span class="w"></span>
 <span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ord</span><span class="w"></span>
 <span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">maxo</span><span class="w"></span>
 
 <span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">vol</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">coeff</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">coeff</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
 <span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">poly</span><span class="w"></span>
 <span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">anasol</span><span class="p">,</span><span class="w"> </span><span class="n">numsol</span><span class="w"></span>
 
@@ -639,16 +1237,14 @@ v = sum_i=1^o+1 c_i*x^(i-1)</p>
 
 <span class="w">  </span><span class="k">type</span><span class="p">(</span><span class="n">cubature</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">scheme</span><span class="w"></span>
 
-<span class="w">  </span><span class="k">call </span><span class="nb">random_number</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span><span class="w"></span>
-
 <span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Lineatures&quot;</span><span class="w"></span>
 <span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">fmt1</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Lines&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">maxval</span><span class="p">(</span><span class="nb">maxloc</span><span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="n">elmtypes</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;LIN&quot;</span><span class="p">)))</span><span class="w"></span>
-<span class="w">  </span><span class="n">vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volumes</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="n">maxo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxorders</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">maxo</span><span class="w"></span>
-<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="n">order</span><span class="p">,</span><span class="s2">&quot;(I1)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">scheme</span><span class="p">%</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;LIN&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">  </span><span class="n">ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">maxval</span><span class="p">(</span><span class="nb">maxloc</span><span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="n">elmtypes</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;LIN&quot;</span><span class="p">)))</span><span class="w"></span>
+<span class="w">  </span><span class="n">vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volumes</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">maxo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxorders</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">do </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">maxo</span><span class="w"></span>
+<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="n">order</span><span class="p">,</span><span class="s2">&quot;(I1)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">g</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="n">scheme</span><span class="p">%</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;LIN&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">g</span><span class="p">])</span><span class="w"></span>
 
 <span class="w">    </span><span class="c">! Check weight sum</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">vol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
@@ -660,17 +1256,23 @@ v = sum_i=1^o+1 c_i*x^(i-1)</p>
 <span class="k">      error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: sum of abscissae failed&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="k">end if</span>
 
-<span class="k">    </span><span class="n">ord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="k">    </span><span class="n">ord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">g</span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="n">coeff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="nb">random_number</span><span class="p">(</span><span class="n">coeff</span><span class="p">(:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
 
 <span class="w">    </span><span class="c">! Analytical integral</span>
-<span class="w">    </span><span class="n">anasol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipolynomial</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">anasol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipolyline</span><span class="p">(</span><span class="n">coeff</span><span class="p">(:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="c">! Numerical integral</span>
 <span class="w">    </span><span class="n">numsol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-<span class="w">    </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">scheme</span><span class="p">%</span><span class="n">points</span><span class="w"></span>
-<span class="w">      </span><span class="n">poly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">polynomial</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">),</span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="n">numsol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numsol</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">poly</span><span class="o">*</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">end do</span><span class="w"> </span><span class="c">! j</span>
+<span class="w">    </span><span class="k">do </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">scheme</span><span class="p">%</span><span class="n">points</span><span class="w"></span>
+<span class="w">      </span><span class="n">poly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">polyfunc</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="mf">0.0_rk</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="mf">0.0_rk</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">numsol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numsol</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">poly</span><span class="o">*</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">end do</span><span class="w"> </span><span class="c">! h</span>
 
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="n">anasol</span><span class="o">-</span><span class="n">numsol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
 <span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
@@ -678,39 +1280,44 @@ v = sum_i=1^o+1 c_i*x^(i-1)</p>
 <span class="w">      </span><span class="k">error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: integration failed&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="k">end if</span>
 
-<span class="k">  end do</span><span class="w"> </span><span class="c">! i</span>
+<span class="k">  end do</span><span class="w"> </span><span class="c">! g</span>
 <span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;passed&quot;</span><span class="w"></span>
 
 <span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s2">&quot;(/,A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Quadratures&quot;</span><span class="w"></span>
 
 <span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">fmt1</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Quadrilaterals&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">maxval</span><span class="p">(</span><span class="nb">maxloc</span><span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="n">elmtypes</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;QUA&quot;</span><span class="p">)))</span><span class="w"></span>
-<span class="w">  </span><span class="n">vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volumes</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="n">maxo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxorders</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">maxo</span><span class="w"></span>
-<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="n">order</span><span class="p">,</span><span class="s2">&quot;(I1)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">scheme</span><span class="p">%</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;QUA&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">  </span><span class="n">ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">maxval</span><span class="p">(</span><span class="nb">maxloc</span><span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="n">elmtypes</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;QUA&quot;</span><span class="p">)))</span><span class="w"></span>
+<span class="w">  </span><span class="n">vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volumes</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">maxo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxorders</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">do </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">maxo</span><span class="w"></span>
+<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="n">order</span><span class="p">,</span><span class="s2">&quot;(I1)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">g</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="n">scheme</span><span class="p">%</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;QUA&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">g</span><span class="p">])</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">vol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
 <span class="k">      error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: sum of weights failed&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="k">end if</span>
-<span class="k">    do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="w"></span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="n">j</span><span class="p">,:))))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">    do </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="n">h</span><span class="p">,:))))</span><span class="w"> </span><span class="k">then</span>
 <span class="k">        error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: sum of abscissae failed&quot;</span><span class="w"></span>
 <span class="w">      </span><span class="k">end if</span>
 <span class="k">    end do</span><span class="w"> </span><span class="c">! j</span>
 
-<span class="w">    </span><span class="n">ord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="n">ord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">g</span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="n">coeff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="nb">random_number</span><span class="p">(</span><span class="n">coeff</span><span class="p">(:,:,</span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
 
 <span class="w">    </span><span class="c">! Analytical integral</span>
-<span class="w">    </span><span class="n">anasol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipolynomial</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span><span class="n">ord</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="w"></span>
+<span class="w">    </span><span class="n">anasol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipolysquare</span><span class="p">(</span><span class="n">coeff</span><span class="p">(:,:,</span><span class="mi">1</span><span class="p">),</span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="c">! Numerical integral</span>
 <span class="w">    </span><span class="n">numsol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-<span class="w">    </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">scheme</span><span class="p">%</span><span class="n">points</span><span class="w"></span>
-<span class="w">      </span><span class="n">poly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">polynomial</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">),</span><span class="n">ord</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="o">*</span><span class="n">polynomial</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">j</span><span class="p">),</span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="n">numsol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numsol</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">poly</span><span class="o">*</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">scheme</span><span class="p">%</span><span class="n">points</span><span class="w"></span>
+<span class="w">      </span><span class="n">poly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">polyfunc</span><span class="p">(</span><span class="n">coeff</span><span class="p">(:,:,</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="mf">0.0_rk</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">numsol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numsol</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">poly</span><span class="o">*</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="w"></span>
 <span class="w">    </span><span class="k">end do</span><span class="w"> </span><span class="c">! j</span>
 
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="n">anasol</span><span class="o">-</span><span class="n">numsol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
@@ -719,83 +1326,91 @@ v = sum_i=1^o+1 c_i*x^(i-1)</p>
 <span class="w">      </span><span class="k">error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: integration failed&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="k">end if</span>
 
-<span class="k">  end do</span><span class="w"> </span><span class="c">! i</span>
+<span class="k">  end do</span><span class="w"> </span><span class="c">! g</span>
 <span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;passed&quot;</span><span class="w"></span>
 
 <span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">fmt1</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Triangles&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">maxval</span><span class="p">(</span><span class="nb">maxloc</span><span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="n">elmtypes</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;TRI&quot;</span><span class="p">)))</span><span class="w"></span>
-<span class="w">  </span><span class="n">vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volumes</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="n">maxo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxorders</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">maxo</span><span class="w"></span>
-<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="n">order</span><span class="p">,</span><span class="s2">&quot;(I1)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">scheme</span><span class="p">%</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;TRI&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">  </span><span class="n">ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">maxval</span><span class="p">(</span><span class="nb">maxloc</span><span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="n">elmtypes</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;TRI&quot;</span><span class="p">)))</span><span class="w"></span>
+<span class="w">  </span><span class="n">vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volumes</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">maxo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxorders</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">do </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">maxo</span><span class="w"></span>
+<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="n">order</span><span class="p">,</span><span class="s2">&quot;(I1)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">g</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="n">scheme</span><span class="p">%</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;TRI&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">g</span><span class="p">])</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">vol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
 <span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">)</span><span class="w"></span>
 <span class="w">      </span><span class="k">error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: sum of weights failed&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="k">end if</span>
-<span class="k">    do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="w"></span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="n">j</span><span class="p">,:))</span><span class="o">/</span><span class="n">scheme</span><span class="p">%</span><span class="n">points</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.0_rk</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">    do </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="n">h</span><span class="p">,:))</span><span class="o">/</span><span class="n">scheme</span><span class="p">%</span><span class="n">points</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.0_rk</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
 <span class="k">        write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="n">j</span><span class="p">,:))</span><span class="w"></span>
+<span class="w">        </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="n">h</span><span class="p">,:))</span><span class="w"></span>
 <span class="w">        </span><span class="k">error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: sum of abscissae failed&quot;</span><span class="w"></span>
 <span class="w">      </span><span class="k">end if</span>
-<span class="k">    end do</span><span class="w"> </span><span class="c">! j</span>
+<span class="k">    end do</span><span class="w"> </span><span class="c">! h</span>
 
-<span class="w">    </span><span class="c">! ord = 2*i-1</span>
+<span class="w">    </span><span class="n">ord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g</span><span class="w"></span>
+<span class="w">    </span><span class="n">coeff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="nb">random_number</span><span class="p">(</span><span class="n">coeff</span><span class="p">(:,:,</span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
 
-<span class="w">    </span><span class="c">! ! Analytical integral</span>
-<span class="w">    </span><span class="c">! anasol = ipolynomial(coeff,ord)**2</span>
+<span class="w">    </span><span class="c">! Analytical integral</span>
+<span class="w">    </span><span class="n">anasol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipolytriangle</span><span class="p">(</span><span class="n">coeff</span><span class="p">(:,:,</span><span class="mi">1</span><span class="p">),</span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="c">! ! Numerical integral</span>
-<span class="w">    </span><span class="c">! numsol = 0</span>
-<span class="w">    </span><span class="c">! do j = 1,scheme%points</span>
-<span class="w">    </span><span class="c">!   poly = polynomial(coeff,scheme%abscissae(1,j),ord) &amp;</span>
-<span class="w">    </span><span class="c">!         *polynomial(coeff,scheme%abscissae(2,j),ord)</span>
-<span class="w">    </span><span class="c">!   numsol = numsol + poly*scheme%weights(j)</span>
-<span class="w">    </span><span class="c">! end do ! j</span>
+<span class="w">    </span><span class="c">! Numerical integral</span>
+<span class="w">    </span><span class="n">numsol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">scheme</span><span class="p">%</span><span class="n">points</span><span class="w"></span>
+<span class="w">      </span><span class="n">poly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">polyfunc</span><span class="p">(</span><span class="n">coeff</span><span class="p">(:,:,</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="mf">0.0_rk</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">numsol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numsol</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">poly</span><span class="o">*</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">end do</span><span class="w"> </span><span class="c">! h</span>
 
-<span class="w">    </span><span class="c">! if (.not.is_zero(anasol-numsol)) then</span>
-<span class="w">    </span><span class="c">!   write(*,*)</span>
-<span class="w">    </span><span class="c">!   write(*,*) anasol, numsol</span>
-<span class="w">    </span><span class="c">!   error stop &quot;order &quot;//order//&quot;: integration failed&quot;</span>
-<span class="w">    </span><span class="c">! end if</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="n">anasol</span><span class="o">-</span><span class="n">numsol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">anasol</span><span class="p">,</span><span class="w"> </span><span class="n">numsol</span><span class="w"></span>
+<span class="w">      </span><span class="k">error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: integration failed&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">end if</span>
 
-<span class="w">  </span><span class="k">end do</span><span class="w"> </span><span class="c">! i</span>
+<span class="k">  end do</span><span class="w"> </span><span class="c">! i</span>
 <span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;passed&quot;</span><span class="w"></span>
 
 <span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s2">&quot;(/,A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Cubatures&quot;</span><span class="w"></span>
 
 <span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">fmt1</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Hexahedrons&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">maxval</span><span class="p">(</span><span class="nb">maxloc</span><span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="n">elmtypes</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;HEX&quot;</span><span class="p">)))</span><span class="w"></span>
-<span class="w">  </span><span class="n">vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volumes</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="n">maxo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxorders</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">maxo</span><span class="w"></span>
-<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="n">order</span><span class="p">,</span><span class="s2">&quot;(I1)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">scheme</span><span class="p">%</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;HEX&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">  </span><span class="n">ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">maxval</span><span class="p">(</span><span class="nb">maxloc</span><span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="n">elmtypes</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;HEX&quot;</span><span class="p">)))</span><span class="w"></span>
+<span class="w">  </span><span class="n">vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volumes</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">maxo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxorders</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">do </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">maxo</span><span class="w"></span>
+<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="n">order</span><span class="p">,</span><span class="s2">&quot;(I1)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">g</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="n">scheme</span><span class="p">%</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;HEX&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">g</span><span class="p">])</span><span class="w"></span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">vol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
 <span class="k">      error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: sum of weights failed&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="k">end if</span>
-<span class="k">    do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="w"></span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="n">j</span><span class="p">,:))))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">    do </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="n">h</span><span class="p">,:))))</span><span class="w"> </span><span class="k">then</span>
 <span class="k">        error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: sum of abscissae failed&quot;</span><span class="w"></span>
 <span class="w">      </span><span class="k">end if</span>
-<span class="k">    end do</span><span class="w"> </span><span class="c">! j</span>
+<span class="k">    end do</span><span class="w"> </span><span class="c">! h</span>
 
-<span class="w">    </span><span class="n">ord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="n">ord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">g</span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="nb">random_number</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="c">! Analytical integral</span>
-<span class="w">    </span><span class="n">anasol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipolynomial</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span><span class="n">ord</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="w"></span>
+<span class="w">    </span><span class="n">anasol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipolycube</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="c">! Numerical integral</span>
 <span class="w">    </span><span class="n">numsol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-<span class="w">    </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">scheme</span><span class="p">%</span><span class="n">points</span><span class="w"></span>
-<span class="w">      </span><span class="n">poly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">polynomial</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">),</span><span class="n">ord</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="o">*</span><span class="n">polynomial</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">j</span><span class="p">),</span><span class="n">ord</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="o">*</span><span class="n">polynomial</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">j</span><span class="p">),</span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="n">numsol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numsol</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">poly</span><span class="o">*</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">end do</span><span class="w"> </span><span class="c">! j</span>
+<span class="w">    </span><span class="k">do </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">scheme</span><span class="p">%</span><span class="n">points</span><span class="w"></span>
+<span class="w">      </span><span class="n">poly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">polyfunc</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">numsol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numsol</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">poly</span><span class="o">*</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">end do</span><span class="w"> </span><span class="c">! h</span>
 
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="n">anasol</span><span class="o">-</span><span class="n">numsol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
 <span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
@@ -803,53 +1418,111 @@ v = sum_i=1^o+1 c_i*x^(i-1)</p>
 <span class="w">      </span><span class="k">error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: integration failed&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="k">end if</span>
 
-<span class="k">  end do</span><span class="w"> </span><span class="c">! i</span>
+<span class="k">  end do</span><span class="w"> </span><span class="c">! g</span>
 <span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;passed&quot;</span><span class="w"></span>
 
 <span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">fmt1</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Tetrahedrons&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">maxval</span><span class="p">(</span><span class="nb">maxloc</span><span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="n">elmtypes</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;TET&quot;</span><span class="p">)))</span><span class="w"></span>
-<span class="w">  </span><span class="n">vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volumes</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="n">maxo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxorders</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">maxo</span><span class="w"></span>
-<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="n">order</span><span class="p">,</span><span class="s2">&quot;(I1)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">scheme</span><span class="p">%</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;TET&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">  </span><span class="n">ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">maxval</span><span class="p">(</span><span class="nb">maxloc</span><span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="n">elmtypes</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;TET&quot;</span><span class="p">)))</span><span class="w"></span>
+<span class="w">  </span><span class="n">vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volumes</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">maxo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxorders</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">do </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">maxo</span><span class="w"></span>
+<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="n">order</span><span class="p">,</span><span class="s2">&quot;(I1)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">g</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="n">scheme</span><span class="p">%</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;TET&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">g</span><span class="p">])</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">vol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
 <span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">)</span><span class="w"></span>
 <span class="w">      </span><span class="k">error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: sum of weights failed&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="k">end if</span>
-<span class="k">    do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="w"></span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="n">j</span><span class="p">,:))</span><span class="o">/</span><span class="n">scheme</span><span class="p">%</span><span class="n">points</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.0_rk</span><span class="o">/</span><span class="mi">4</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">    do </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="n">h</span><span class="p">,:))</span><span class="o">/</span><span class="n">scheme</span><span class="p">%</span><span class="n">points</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.0_rk</span><span class="o">/</span><span class="mi">4</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
 <span class="k">        write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="n">j</span><span class="p">,:))</span><span class="w"></span>
+<span class="w">        </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="n">h</span><span class="p">,:))</span><span class="w"></span>
+<span class="w">        </span><span class="k">error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: sum of abscissae failed&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="k">end if</span>
+<span class="k">    end do</span><span class="w"> </span><span class="c">! h</span>
+
+<span class="w">    </span><span class="n">ord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="nb">random_number</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">! Analytical integral</span>
+<span class="w">    </span><span class="n">anasol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipolytet</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">! Numerical integral</span>
+<span class="w">    </span><span class="n">numsol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">scheme</span><span class="p">%</span><span class="n">points</span><span class="w"></span>
+<span class="w">      </span><span class="n">poly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">polyfunc</span><span class="p">(</span><span class="n">coeff</span><span class="p">(:,:,</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">numsol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numsol</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">poly</span><span class="o">*</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">end do</span><span class="w"> </span><span class="c">! h</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="n">anasol</span><span class="o">-</span><span class="n">numsol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">anasol</span><span class="p">,</span><span class="w"> </span><span class="n">numsol</span><span class="w"></span>
+<span class="w">      </span><span class="k">error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: integration failed&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">end if</span>
+
+<span class="k">  end do</span><span class="w"> </span><span class="c">! g</span>
+<span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;passed&quot;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">fmt1</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Prisms&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="n">ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">maxval</span><span class="p">(</span><span class="nb">maxloc</span><span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="n">elmtypes</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;WEJ&quot;</span><span class="p">)))</span><span class="w"></span>
+<span class="w">  </span><span class="n">vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volumes</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">maxo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxorders</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">do </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">maxo</span><span class="w"></span>
+<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="n">order</span><span class="p">,</span><span class="s2">&quot;(I1)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">g</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="n">scheme</span><span class="p">%</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;WEJ&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">g</span><span class="p">])</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">vol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: sum of weights failed&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">end if</span>
+<span class="k">    do </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="n">h</span><span class="p">,:))</span><span class="o">/</span><span class="n">scheme</span><span class="p">%</span><span class="n">points</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.0_rk</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="n">h</span><span class="p">,:))</span><span class="w"></span>
 <span class="w">        </span><span class="k">error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: sum of abscissae failed&quot;</span><span class="w"></span>
 <span class="w">      </span><span class="k">end if</span>
 <span class="k">    end do</span><span class="w"> </span><span class="c">! j</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">3</span><span class="p">,:))))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">sum</span><span class="p">(</span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">3</span><span class="p">,:))</span><span class="w"></span>
+<span class="w">      </span><span class="k">error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: sum of abscissae failed&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">end if</span>
 
-<span class="w">    </span><span class="c">! ord = 2*i-1</span>
+<span class="k">    </span><span class="n">ord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="nb">random_number</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="c">! ! Analytical integral</span>
-<span class="w">    </span><span class="c">! anasol = ipolynomial(coeff,ord)**2</span>
+<span class="w">    </span><span class="c">! Analytical integral</span>
+<span class="w">    </span><span class="n">anasol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipolywedge</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="c">! ! Numerical integral</span>
-<span class="w">    </span><span class="c">! numsol = 0</span>
-<span class="w">    </span><span class="c">! do j = 1,scheme%points</span>
-<span class="w">    </span><span class="c">!   poly = polynomial(coeff,scheme%abscissae(1,j),ord) &amp;</span>
-<span class="w">    </span><span class="c">!         *polynomial(coeff,scheme%abscissae(2,j),ord)</span>
-<span class="w">    </span><span class="c">!   numsol = numsol + poly*scheme%weights(j)</span>
-<span class="w">    </span><span class="c">! end do ! j</span>
+<span class="w">    </span><span class="c">! Numerical integral</span>
+<span class="w">    </span><span class="n">numsol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">scheme</span><span class="p">%</span><span class="n">points</span><span class="w"></span>
+<span class="w">      </span><span class="n">poly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">polyfunc</span><span class="p">(</span><span class="n">coeff</span><span class="p">(:,:,</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">scheme</span><span class="p">%</span><span class="n">abscissae</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">ord</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">numsol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numsol</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">poly</span><span class="o">*</span><span class="n">scheme</span><span class="p">%</span><span class="n">weights</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">end do</span><span class="w"> </span><span class="c">! h</span>
 
-<span class="w">    </span><span class="c">! if (.not.is_zero(anasol-numsol)) then</span>
-<span class="w">    </span><span class="c">!   write(*,*)</span>
-<span class="w">    </span><span class="c">!   write(*,*) anasol, numsol</span>
-<span class="w">    </span><span class="c">!   error stop &quot;order &quot;//order//&quot;: integration failed&quot;</span>
-<span class="w">    </span><span class="c">! end if</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">is_zero</span><span class="p">(</span><span class="n">anasol</span><span class="o">-</span><span class="n">numsol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">anasol</span><span class="p">,</span><span class="w"> </span><span class="n">numsol</span><span class="w"></span>
+<span class="w">      </span><span class="k">error stop</span><span class="w"> </span><span class="s2">&quot;order &quot;</span><span class="o">//</span><span class="n">order</span><span class="o">//</span><span class="s2">&quot;: integration failed&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">end if</span>
 
-<span class="w">  </span><span class="k">end do</span><span class="w"> </span><span class="c">! i</span>
+<span class="k">  end do</span><span class="w"> </span><span class="c">! g</span>
 <span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;passed&quot;</span><span class="w"></span>
 
-<span class="k">contains</span>
+<span class="k">contains</span><span class="w"></span>
+
+<span class="c">!***********************************************************************</span>
 
 <span class="k">pure elemental function </span><span class="n">is_zero</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="w"></span>
 <span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">r</span><span class="w"></span>
@@ -859,35 +1532,191 @@ v = sum_i=1^o+1 c_i*x^(i-1)</p>
 
 <span class="c">!***********************************************************************</span>
 
-<span class="k">pure function </span><span class="n">polynomial</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"></span>
-<span class="c">!! Evaluate polynomial at x with coefficients c to order o</span>
-<span class="c">!! v = sum_i=1^o+1 c_i*x^(i-1)</span>
-<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="w"> </span><span class="n">x</span><span class="w"></span>
+<span class="k">pure function </span><span class="n">polyfunc</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"></span>
+<span class="c">!! Evaluate polynomial at x(3) with coefficients c to order o</span>
+<span class="c">!! v = sum_i,j,k=0^{i+j+k=o} c_ijk*x^i*y^j*z^k</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="w"></span>
 <span class="w">  </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">o</span><span class="w"></span>
 <span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">v</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
-<span class="w">  </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="n">o</span><span class="o">+</span><span class="mi">1</span><span class="w"></span>
-<span class="w">    </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="o">-</span><span class="n">i</span><span class="w"></span>
+<span class="w">      </span><span class="k">do </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="w"></span>
+<span class="w">        </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">y</span><span class="o">**</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">**</span><span class="n">k</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">end do</span><span class="w"> </span><span class="c">! k</span>
+<span class="w">    </span><span class="k">end do</span><span class="w"> </span><span class="c">! j</span>
 <span class="w">  </span><span class="k">end do</span><span class="w"> </span><span class="c">! i</span>
-<span class="k">end function </span><span class="n">polynomial</span><span class="w"></span>
+
+<span class="k">end function </span><span class="n">polyfunc</span><span class="w"></span>
 
 <span class="c">!***********************************************************************</span>
 
-<span class="k">pure function </span><span class="n">ipolynomial</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"></span>
+<span class="k">pure function </span><span class="n">ipolyline</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"></span>
 <span class="c">!! Evaluate polynomial integral over domain [xlo, xhi] with coefficients</span>
 <span class="c">!! c to order o</span>
-<span class="c">!! v = sum_i=1^o+1 c_i/i*xhi^i - c_i*xlo^i</span>
+<span class="c">!! v = sum_i=0^o c_i*(xhi^i - xlo^i)/i</span>
 <span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
 <span class="w">  </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">o</span><span class="w"></span>
 <span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">v</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">),</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xlo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">xhi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
 <span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
+
 <span class="w">  </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">o</span><span class="o">+</span><span class="mi">1</span><span class="w"></span>
-<span class="w">    </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">xhi</span><span class="o">**</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">xlo</span><span class="o">**</span><span class="n">i</span><span class="p">)</span><span class="o">/</span><span class="n">i</span><span class="w"></span>
+<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="w"></span>
+<span class="w">    </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">polyline</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
 <span class="w">  </span><span class="k">end do</span><span class="w"> </span><span class="c">! i</span>
-<span class="k">end function </span><span class="n">ipolynomial</span><span class="w"></span>
+<span class="k">end function </span><span class="n">ipolyline</span><span class="w"></span>
+
+<span class="c">!***********************************************************************</span>
+
+<span class="k">pure function </span><span class="n">ipolysquare</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"></span>
+<span class="c">!! Evaluate polynomial integral over square domain</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">o</span><span class="w"></span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">v</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="o">-</span><span class="n">i</span><span class="w"></span>
+<span class="w">      </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">polyline</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">polyline</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">end do</span><span class="w"> </span><span class="c">! j</span>
+<span class="w">  </span><span class="k">end do</span><span class="w"> </span><span class="c">! i</span>
+
+<span class="k">end function </span><span class="n">ipolysquare</span><span class="w"></span>
+
+<span class="c">!***********************************************************************</span>
+
+<span class="k">pure function </span><span class="n">ipolytriangle</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"></span>
+<span class="c">!! Evaluate polynomial integral over triangular domain</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">o</span><span class="w"></span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">v</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="o">-</span><span class="n">i</span><span class="w"></span>
+<span class="w">      </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">polytri</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">end do</span><span class="w"> </span><span class="c">! j</span>
+<span class="w">  </span><span class="k">end do</span><span class="w"> </span><span class="c">! i</span>
+
+<span class="k">end function </span><span class="n">ipolytriangle</span><span class="w"></span>
+
+<span class="c">!***********************************************************************</span>
+
+<span class="k">pure function </span><span class="n">ipolycube</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"></span>
+<span class="c">!! Evaluate polynomial integral over cube domain</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">o</span><span class="w"></span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">v</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="o">-</span><span class="n">i</span><span class="w"></span>
+<span class="w">      </span><span class="k">do </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="w"></span>
+<span class="w">        </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">polyline</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">polyline</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">polyline</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">end do</span><span class="w"> </span><span class="c">! k</span>
+<span class="w">    </span><span class="k">end do</span><span class="w"> </span><span class="c">! j</span>
+<span class="w">  </span><span class="k">end do</span><span class="w"> </span><span class="c">! i</span>
+
+<span class="k">end function </span><span class="n">ipolycube</span><span class="w"></span>
+
+<span class="c">!***********************************************************************</span>
+
+<span class="k">pure function </span><span class="n">ipolytet</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"></span>
+<span class="c">!! Evaluate polynomial integral over tetrahedral domain</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">o</span><span class="w"></span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">v</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="o">-</span><span class="n">i</span><span class="w"></span>
+<span class="w">      </span><span class="k">do </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="w"></span>
+<span class="w">        </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">polytet</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">end do</span><span class="w"> </span><span class="c">! k</span>
+<span class="w">    </span><span class="k">end do</span><span class="w"> </span><span class="c">! j</span>
+<span class="w">  </span><span class="k">end do</span><span class="w"> </span><span class="c">! i</span>
+
+<span class="k">end function </span><span class="n">ipolytet</span><span class="w"></span>
+
+<span class="c">!***********************************************************************</span>
+
+<span class="k">pure function </span><span class="n">ipolywedge</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"></span>
+<span class="c">!! Evaluate polynomial integral over prismatic domain</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">o</span><span class="w"></span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">v</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="o">-</span><span class="n">i</span><span class="w"></span>
+<span class="w">      </span><span class="k">do </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">o</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="w"></span>
+<span class="w">        </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">polytri</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">polyline</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">end do</span><span class="w"> </span><span class="c">! k</span>
+<span class="w">    </span><span class="k">end do</span><span class="w"> </span><span class="c">! j</span>
+<span class="w">  </span><span class="k">end do</span><span class="w"> </span><span class="c">! i</span>
+
+<span class="k">end function </span><span class="n">ipolywedge</span><span class="w"></span>
+
+<span class="c">!***********************************************************************</span>
+
+<span class="k">pure elemental </span><span class="kt">integer </span><span class="k">function </span><span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"></span>
+<span class="c">!! Basic factorial function</span>
+<span class="w">  </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
+<span class="w">  </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="w"></span>
+<span class="w">    </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="o">*</span><span class="n">i</span><span class="w"></span>
+<span class="w">  </span><span class="k">end do</span><span class="w"> </span><span class="c">! i</span>
+<span class="k">end function </span><span class="n">factorial</span><span class="w"></span>
+
+<span class="c">!***********************************************************************</span>
+
+<span class="k">pure elemental </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="k">function </span><span class="n">polytri</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"></span>
+<span class="c">!! Value of polynomial integral over triangular domain</span>
+<span class="c">!! int_0^1 int_0^(1-x) x^m*y^n dy dx</span>
+<span class="w">  </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">  </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0_rk</span><span class="o">*</span><span class="n">factorial</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">/</span><span class="n">factorial</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="k">end function </span><span class="n">polytri</span><span class="w"></span>
+
+<span class="c">!***********************************************************************</span>
+
+<span class="k">pure elemental </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="k">function </span><span class="n">polytet</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"></span>
+<span class="c">!! Value of polynomial integral over tetrahedral domain</span>
+<span class="c">!! int_0^1 int_0^(1-x) int_0^(1-x-y) x^m*y^n*z^p dz dy dx</span>
+<span class="w">  </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="w"></span>
+<span class="w">  </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0_rk</span><span class="o">*</span><span class="n">factorial</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="n">factorial</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">/</span><span class="n">factorial</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="o">+</span><span class="n">p</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+<span class="k">end function </span><span class="n">polytet</span><span class="w"></span>
+
+<span class="c">!***********************************************************************</span>
+
+<span class="k">pure elemental </span><span class="kt">real</span><span class="p">(</span><span class="n">rk</span><span class="p">)</span><span class="w"> </span><span class="k">function </span><span class="n">polyline</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"></span>
+<span class="c">!! Value of polynomial integral over linear domain</span>
+<span class="c">!! int_-1^1 x^m dx</span>
+<span class="w">  </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">m</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">mod</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">    </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0_rk</span><span class="o">/</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">else</span>
+<span class="k">    </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">  </span><span class="k">end if</span>
+
+<span class="k">end function </span><span class="n">polyline</span><span class="w"></span>
+
+<span class="c">!***********************************************************************</span>
 
 <span class="k">end program </span><span class="n">cubatures_test</span><span class="w"></span>
 </pre></div>
@@ -912,7 +1741,7 @@ v = sum_i=1^o+1 c_i*x^(i-1)</p>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-09-05 14:51 +0000             </p>
+ on 2025-09-10 07:48 +0000             </p>
           </div>
         </div>
         <br>
