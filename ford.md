@@ -9,7 +9,7 @@ summary: Finite Element cubatures in modern Fortran
 project_github: https://github.com/willklausler/fortran_cubatures
 project_download:
 author: Will Klausler
-author_email: wklausler@protonmail.com
+email: wklausler@protonmail.com
 github: https://github.com/willklausler/fortran_cubatures
 media_dir: docs/images
 exclude_dir: archive
@@ -18,6 +18,7 @@ display: public
          protected
 source: true
 proc_internals: true
+preprocess: False
 sort: permission-alpha
 favicon: docs/images/favicon.ico
 print_creation_date: true
