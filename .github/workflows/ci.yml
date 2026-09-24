@@ -23,6 +23,8 @@ jobs:
         with:
           compiler: ${{ matrix.compiler }}
           version: ${{ matrix.version }}
+      - run: brew install gcc@12   # runtime of the prebuilt macOS fpm binary
+        if: runner.os == 'macOS'
       - uses: fortran-lang/setup-fpm@v10
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
