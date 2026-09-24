@@ -1,48 +1,33 @@
-# TOML file for fpm as described at https://fpm.fortran-lang.org/en/spec/manifest.html
 name = "fortran_cubatures"
 version = "0.1.0"
 license = "license"
 author = "Will Klausler"
-maintainer = "226649647+willklausler@users.noreply.github.com"
 copyright = "Copyright 2025, Will Klausler"
-description = ""
-categories = [""]
-keywords = ["fortran", "fortran-package-manager"]
+description = "Gaussian cubature derived type for finite elements"
+categories = ["numerical"]
+keywords = ["cubature", "quadrature", "finite-element", "numerical-integration"]
 homepage = "https://github.com/willklausler/fortran_cubatures"
 
-[build]
-   auto-executables = true
-   auto-tests = true
-   auto-examples = true
-   # new default with v0.8.0
-   # force module naming rules to avoid collisions with other packages
-   #module-naming = true
-   # traditional where user can use any module name
-   module-naming = false
+[features]
+debug.flags = "-g -Wall"
 
-# new section with v0.8.0
-[fortran]
-   #implicit-typing = false
-   #implicit-external = false
-   #source-form = "free"
-   # traditional pre-version8 compatibility
-   implicit-typing = true
-   implicit-external = true
-   source-form = "default"
+debug.gfortran.flags = "-fbacktrace -fcheck=all -Wextra -Wpedantic -Wuninitialized -Wmaybe-uninitialized -Wimplicit-interface -Wimplicit-procedure -Warray-temporaries -Wrealloc-lhs -finit-real=snan -finit-integer=-2147483648 -finit-logical=true -fstack-protector-all"
+debug.gfortran.linux.flags = "-fsanitize=address,undefined"
+
+debug.ifx.flags = "-check all -warn all -traceback -fpe0 -init=snan,arrays -ftrapuv -fp-stack-check -diag-error-limit 10"
+debug.ifx.linux.flags = "-fsanitize=address,undefined"
+
+debug.nvfortran.flags = "-Minform=inform -Mbounds -Mchkptr -Mchkstk -Mstandard -Ktrap=fp -traceback"
+
+release.flags = "-O3"
+release.gfortran.flags = "-fbacktrace -march=native -funroll-loops -flto"
+release.ifx.flags = "-xHost -unroll"
+
+release.nvfortran.flags = "-Mrecursive -fast"
+
+[profiles]
+debug = ["debug"]
+release = ["release"]
 
 [install]
    library = false
-
-#[profile.debug]
-#   fflags = "-g -O0 -Wall"
-
-# example
-#[[test]]
-#name="runTests"
-#source-dir="test"
-#main="test_suite_easy.f90"
-#[test.dependencies]
-##M_framework = { git = "https://github.com/urbanjost/M_framework.git" }
-
-#[dev-dependencies]
-#M_framework = { git = "https://github.com/urbanjost/M_framework.git" }

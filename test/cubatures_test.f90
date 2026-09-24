@@ -18,12 +18,12 @@ program cubatures_test
 
   character(1) :: order
 
-  character(*), parameter :: fmt1 = "(A15,': ',$)"
+  character(*), parameter :: fmt1 = "(A15,': ')"
 
   type(cubature) :: scheme
 
   write(*,"(A)") "Lineatures"
-  write(*,fmt1) "Lines"
+  write(*,fmt1,advance='no') "Lines"
   ind = maxval(maxloc(index(elmtypes, "LIN")))
   vol = volumes(ind)
   maxo = maxorders(ind)
@@ -70,7 +70,7 @@ program cubatures_test
 
   write(*,"(/,A)") "Quadratures"
 
-  write(*,fmt1) "Quadrilaterals"
+  write(*,fmt1,advance='no') "Quadrilaterals"
   ind = maxval(maxloc(index(elmtypes, "QUA")))
   vol = volumes(ind)
   maxo = maxorders(ind)
@@ -97,7 +97,7 @@ program cubatures_test
     ! Numerical integral
     numsol = 0
     do h = 1,scheme%points
-      poly = polyfunc(coeff(:,:,1), &
+      poly = polyfunc(coeff, &
                       scheme%abscissae(1,h), &
                       scheme%abscissae(2,h), &
                       0.0_rk, &
@@ -114,7 +114,7 @@ program cubatures_test
   end do ! g
   write(*,"(A)") "passed"
 
-  write(*,fmt1) "Triangles"
+  write(*,fmt1,advance='no') "Triangles"
   ind = maxval(maxloc(index(elmtypes, "TRI")))
   vol = volumes(ind)
   maxo = maxorders(ind)
@@ -145,7 +145,7 @@ program cubatures_test
     ! Numerical integral
     numsol = 0
     do h = 1,scheme%points
-      poly = polyfunc(coeff(:,:,1), &
+      poly = polyfunc(coeff, &
                       scheme%abscissae(1,h), &
                       scheme%abscissae(2,h), &
                       0.0_rk, &
@@ -164,7 +164,7 @@ program cubatures_test
 
   write(*,"(/,A)") "Cubatures"
 
-  write(*,fmt1) "Hexahedrons"
+  write(*,fmt1,advance='no') "Hexahedrons"
   ind = maxval(maxloc(index(elmtypes, "HEX")))
   vol = volumes(ind)
   maxo = maxorders(ind)
@@ -206,7 +206,7 @@ program cubatures_test
   end do ! g
   write(*,"(A)") "passed"
 
-  write(*,fmt1) "Tetrahedrons"
+  write(*,fmt1,advance='no') "Tetrahedrons"
   ind = maxval(maxloc(index(elmtypes, "TET")))
   vol = volumes(ind)
   maxo = maxorders(ind)
@@ -236,7 +236,7 @@ program cubatures_test
     ! Numerical integral
     numsol = 0
     do h = 1,scheme%points
-      poly = polyfunc(coeff(:,:,1), &
+      poly = polyfunc(coeff, &
                       scheme%abscissae(1,h), &
                       scheme%abscissae(2,h), &
                       scheme%abscissae(3,h), &
@@ -253,7 +253,7 @@ program cubatures_test
   end do ! g
   write(*,"(A)") "passed"
 
-  write(*,fmt1) "Prisms"
+  write(*,fmt1,advance='no') "Prisms"
   ind = maxval(maxloc(index(elmtypes, "WEJ")))
   vol = volumes(ind)
   maxo = maxorders(ind)
@@ -288,7 +288,7 @@ program cubatures_test
     ! Numerical integral
     numsol = 0
     do h = 1,scheme%points
-      poly = polyfunc(coeff(:,:,1), &
+      poly = polyfunc(coeff, &
                       scheme%abscissae(1,h), &
                       scheme%abscissae(2,h), &
                       scheme%abscissae(3,h), &
