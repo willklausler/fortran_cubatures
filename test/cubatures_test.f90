@@ -1,505 +1,318 @@
 program cubatures_test
-!! Test cubatures
+!! Unit tests for [[cubatures]].
+!!
+!! For every element type and a sweep of degrees, checks that each rule
+!!
+!! - integrates every monomial in its polynomial space exactly,
+!! - has positive weights and abscissae strictly inside the element,
+!! - is consistent (`is_valid`).
+!!
+!! Also checks point counts of the tabulated rules, point ordering, the
+!! constructor and `set` interfaces, reuse, `destroy`, and output.
 
-  use iso_fortran_env, only: rk => real64
   use cubatures
 
   implicit none
 
-  integer :: g, h
-  integer :: ind
-  integer :: ord
-  integer :: maxo
+  real(rk), parameter :: tol = 1.0e-13_rk   !! Relative tolerance on integrals
+  integer :: nfail = 0                      !! Number of failed checks
+  integer :: p, px, py, pz
 
-  real(rk) :: vol
-  real(rk) :: coeff(10,10,10)
-  real(rk) :: poly
-  real(rk) :: anasol, numsol
+  call section("Line")
+  do p = 0, 25
+    call check_rule(cubature(CUB_LIN, p))
+  end do
 
-  character(1) :: order
+  call section("Quadrilateral")
+  do py = 0, 9
+    do px = 0, 9
+      call check_rule(cubature(CUB_QUA, [px, py]))
+    end do
+  end do
 
-  character(*), parameter :: fmt1 = "(A15,': ')"
+  call section("Hexahedron")
+  do pz = 0, 5
+    do py = 0, 5
+      do px = 0, 5
+        call check_rule(cubature(CUB_HEX, [px, py, pz]))
+      end do
+    end do
+  end do
 
-  type(cubature) :: scheme
+  call section("Triangle")
+  do p = 0, 20
+    call check_rule(cubature(CUB_TRI, p))
+  end do
 
-  write(*,"(A)") "Lineatures"
-  write(*,fmt1,advance='no') "Lines"
-  ind = maxval(maxloc(index(elmtypes, "LIN")))
-  vol = volumes(ind)
-  maxo = maxorders(ind)
-  do g = 1,maxo
-    write(order,"(I1)") g
-    call scheme%set("LIN", [g])
+  call section("Tetrahedron")
+  do p = 0, 15
+    call check_rule(cubature(CUB_TET, p))
+  end do
 
-    ! Check weight sum
-    if (.not.is_zero(sum(scheme%weights) - vol)) then
-      error stop "order "//order//": sum of weights failed"
-    end if
+  call section("Wedge")
+  do pz = 0, 7
+    do p = 0, 7
+      call check_rule(cubature(CUB_WED, [p, pz]))
+    end do
+  end do
 
-    ! Check abscissae balance
-    if (.not.is_zero(sum(scheme%abscissae(1,:)))) then
-      error stop "order "//order//": sum of abscissae failed"
-    end if
+  call section("Point counts")
+  call expect(npts(CUB_LIN, [0]) == 1,       "LIN 0")
+  call expect(npts(CUB_LIN, [5]) == 3,       "LIN 5")
+  call expect(npts(CUB_TRI, [1]) == 1,       "TRI 1")
+  call expect(npts(CUB_TRI, [2]) == 3,       "TRI 2")
+  call expect(npts(CUB_TRI, [3]) == 4,       "TRI 3")
+  call expect(npts(CUB_TRI, [4]) == 6,       "TRI 4")
+  call expect(npts(CUB_TRI, [5]) == 7,       "TRI 5")
+  call expect(npts(CUB_TET, [1]) == 1,       "TET 1")
+  call expect(npts(CUB_TET, [2]) == 4,       "TET 2")
+  call expect(npts(CUB_TET, [3]) == 8,       "TET 3")
+  call expect(npts(CUB_HEX, [1, 3, 5]) == 6, "HEX [1,3,5]")
+  call expect(npts(CUB_WED, [2, 3]) == 6,    "WED [2,3]")
 
-    ord = 2*g-1
-    coeff = 0
-    call random_number(coeff(:,1,1))
+  call section("Interface")
+  call test_interface()
 
-    ! Analytical integral
-    anasol = ipolyline(coeff(:,1,1),ord)
+  call section("Output")
+  call test_output()
 
-    ! Numerical integral
-    numsol = 0
-    do h = 1,scheme%points
-      poly = polyfunc(coeff, &
-                      scheme%abscissae(1,h), &
-                      0.0_rk, &
-                      0.0_rk, &
-                      ord)
-      numsol = numsol + poly*scheme%weights(h)
-    end do ! h
-
-    if (.not.is_zero(anasol-numsol)) then
-      write(*,*)
-      write(*,*) anasol, numsol
-      error stop "order "//order//": integration failed"
-    end if
-
-  end do ! g
-  write(*,"(A)") "passed"
-
-  write(*,"(/,A)") "Quadratures"
-
-  write(*,fmt1,advance='no') "Quadrilaterals"
-  ind = maxval(maxloc(index(elmtypes, "QUA")))
-  vol = volumes(ind)
-  maxo = maxorders(ind)
-  do g = 1,maxo
-    write(order,"(I1)") g
-    call scheme%set("QUA", [g])
-
-    if (.not.is_zero(sum(scheme%weights) - vol)) then
-      error stop "order "//order//": sum of weights failed"
-    end if
-    do h = 1,2
-      if (.not.is_zero(sum(scheme%abscissae(h,:)))) then
-        error stop "order "//order//": sum of abscissae failed"
-      end if
-    end do ! j
-
-    ord = 2*g-1
-    coeff = 0
-    call random_number(coeff(:,:,1))
-
-    ! Analytical integral
-    anasol = ipolysquare(coeff(:,:,1),ord)
-
-    ! Numerical integral
-    numsol = 0
-    do h = 1,scheme%points
-      poly = polyfunc(coeff, &
-                      scheme%abscissae(1,h), &
-                      scheme%abscissae(2,h), &
-                      0.0_rk, &
-                      ord)
-      numsol = numsol + poly*scheme%weights(h)
-    end do ! j
-
-    if (.not.is_zero(anasol-numsol)) then
-      write(*,*)
-      write(*,*) anasol, numsol
-      error stop "order "//order//": integration failed"
-    end if
-
-  end do ! g
-  write(*,"(A)") "passed"
-
-  write(*,fmt1,advance='no') "Triangles"
-  ind = maxval(maxloc(index(elmtypes, "TRI")))
-  vol = volumes(ind)
-  maxo = maxorders(ind)
-  do g = 1,maxo
-    write(order,"(I1)") g
-    call scheme%set("TRI", [g])
-
-    if (.not.is_zero(sum(scheme%weights) - vol)) then
-      write(*,*)
-      write(*,*) sum(scheme%weights)
-      error stop "order "//order//": sum of weights failed"
-    end if
-    do h = 1,2
-      if (.not.is_zero(sum(scheme%abscissae(h,:))/scheme%points - 1.0_rk/3)) then
-        write(*,*)
-        write(*,*) sum(scheme%abscissae(h,:))
-        error stop "order "//order//": sum of abscissae failed"
-      end if
-    end do ! h
-
-    ord = g
-    coeff = 0
-    call random_number(coeff(:,:,1))
-
-    ! Analytical integral
-    anasol = ipolytriangle(coeff(:,:,1),ord)
-
-    ! Numerical integral
-    numsol = 0
-    do h = 1,scheme%points
-      poly = polyfunc(coeff, &
-                      scheme%abscissae(1,h), &
-                      scheme%abscissae(2,h), &
-                      0.0_rk, &
-                      ord)
-      numsol = numsol + poly*scheme%weights(h)
-    end do ! h
-
-    if (.not.is_zero(anasol-numsol)) then
-      write(*,*)
-      write(*,*) anasol, numsol
-      error stop "order "//order//": integration failed"
-    end if
-
-  end do ! i
-  write(*,"(A)") "passed"
-
-  write(*,"(/,A)") "Cubatures"
-
-  write(*,fmt1,advance='no') "Hexahedrons"
-  ind = maxval(maxloc(index(elmtypes, "HEX")))
-  vol = volumes(ind)
-  maxo = maxorders(ind)
-  do g = 1,maxo
-    write(order,"(I1)") g
-    call scheme%set("HEX", [g])
-    if (.not.is_zero(sum(scheme%weights) - vol)) then
-      error stop "order "//order//": sum of weights failed"
-    end if
-    do h = 1,3
-      if (.not.is_zero(sum(scheme%abscissae(h,:)))) then
-        error stop "order "//order//": sum of abscissae failed"
-      end if
-    end do ! h
-
-    ord = 2*g-1
-    call random_number(coeff)
-
-    ! Analytical integral
-    anasol = ipolycube(coeff,ord)
-
-    ! Numerical integral
-    numsol = 0
-    do h = 1,scheme%points
-      poly = polyfunc(coeff, &
-                      scheme%abscissae(1,h), &
-                      scheme%abscissae(2,h), &
-                      scheme%abscissae(3,h), &
-                      ord)
-      numsol = numsol + poly*scheme%weights(h)
-    end do ! h
-
-    if (.not.is_zero(anasol-numsol)) then
-      write(*,*)
-      write(*,*) anasol, numsol
-      error stop "order "//order//": integration failed"
-    end if
-
-  end do ! g
-  write(*,"(A)") "passed"
-
-  write(*,fmt1,advance='no') "Tetrahedrons"
-  ind = maxval(maxloc(index(elmtypes, "TET")))
-  vol = volumes(ind)
-  maxo = maxorders(ind)
-  do g = 1,maxo
-    write(order,"(I1)") g
-    call scheme%set("TET", [g])
-
-    if (.not.is_zero(sum(scheme%weights) - vol)) then
-      write(*,*)
-      write(*,*) sum(scheme%weights)
-      error stop "order "//order//": sum of weights failed"
-    end if
-    do h = 1,3
-      if (.not.is_zero(sum(scheme%abscissae(h,:))/scheme%points - 1.0_rk/4)) then
-        write(*,*)
-        write(*,*) sum(scheme%abscissae(h,:))
-        error stop "order "//order//": sum of abscissae failed"
-      end if
-    end do ! h
-
-    ord = g
-    call random_number(coeff)
-
-    ! Analytical integral
-    anasol = ipolytet(coeff,ord)
-
-    ! Numerical integral
-    numsol = 0
-    do h = 1,scheme%points
-      poly = polyfunc(coeff, &
-                      scheme%abscissae(1,h), &
-                      scheme%abscissae(2,h), &
-                      scheme%abscissae(3,h), &
-                      ord)
-      numsol = numsol + poly*scheme%weights(h)
-    end do ! h
-
-    if (.not.is_zero(anasol-numsol)) then
-      write(*,*)
-      write(*,*) anasol, numsol
-      error stop "order "//order//": integration failed"
-    end if
-
-  end do ! g
-  write(*,"(A)") "passed"
-
-  write(*,fmt1,advance='no') "Prisms"
-  ind = maxval(maxloc(index(elmtypes, "WEJ")))
-  vol = volumes(ind)
-  maxo = maxorders(ind)
-  do g = 1,maxo
-    write(order,"(I1)") g
-    call scheme%set("WEJ", [g])
-
-    if (.not.is_zero(sum(scheme%weights) - vol)) then
-      write(*,*)
-      write(*,*) sum(scheme%weights)
-      error stop "order "//order//": sum of weights failed"
-    end if
-    do h = 1,2
-      if (.not.is_zero(sum(scheme%abscissae(h,:))/scheme%points - 1.0_rk/3)) then
-        write(*,*)
-        write(*,*) sum(scheme%abscissae(h,:))
-        error stop "order "//order//": sum of abscissae failed"
-      end if
-    end do ! j
-    if (.not.is_zero(sum(scheme%abscissae(3,:)))) then
-      write(*,*)
-      write(*,*) sum(scheme%abscissae(3,:))
-      error stop "order "//order//": sum of abscissae failed"
-    end if
-
-    ord = g
-    call random_number(coeff)
-
-    ! Analytical integral
-    anasol = ipolywedge(coeff,ord)
-
-    ! Numerical integral
-    numsol = 0
-    do h = 1,scheme%points
-      poly = polyfunc(coeff, &
-                      scheme%abscissae(1,h), &
-                      scheme%abscissae(2,h), &
-                      scheme%abscissae(3,h), &
-                      ord)
-      numsol = numsol + poly*scheme%weights(h)
-    end do ! h
-
-    if (.not.is_zero(anasol-numsol)) then
-      write(*,*)
-      write(*,*) anasol, numsol
-      error stop "order "//order//": integration failed"
-    end if
-
-  end do ! g
-  write(*,"(A)") "passed"
+  write(*,*)
+  if (nfail > 0) then
+    write(*,"(I0,A)") nfail, " check(s) failed"
+    error stop 1
+  end if
+  write(*,"(A)") "All tests passed"
 
 contains
 
 !***********************************************************************
 
-pure elemental function is_zero(r) result(z)
-  real(rk), intent(in) :: r
-  logical :: z
-  z = abs(r) < 10.0_rk**(-12)
-end function is_zero
+subroutine section(name)
+!! Start a group of checks
+  character(*), intent(in) :: name
+  write(*,"(A)") name
+end subroutine section
 
 !***********************************************************************
 
-pure function polyfunc(c,x,y,z,o) result(v)
-!! Evaluate polynomial at x(3) with coefficients c to order o
-!! v = sum_i,j,k=0^{i+j+k=o} c_ijk*x^i*y^j*z^k
-  real(rk), intent(in) :: c(10,10,10)
-  real(rk), intent(in) :: x, y, z
-  integer, intent(in) :: o
-  real(rk) :: v
-
-  integer :: i, j, k
-
-  v = 0
-  do i = 0,o
-    do j = 0,o-i
-      do k = 0,o-i-j
-        v = v + c(i+1,j+1,k+1)*(x**i)*(y**j)*(z**k)
-      end do ! k
-    end do ! j
-  end do ! i
-
-end function polyfunc
+subroutine expect(cond, msg)
+!! Record a failed check
+  logical, intent(in) :: cond
+  character(*), intent(in) :: msg
+  if (cond) return
+  nfail = nfail + 1
+  write(*,"(2X,'FAIL: ',A)") msg
+end subroutine expect
 
 !***********************************************************************
 
-pure function ipolyline(c,o) result(v)
-!! Evaluate polynomial integral over domain [xlo, xhi] with coefficients
-!! c to order o
-!! v = sum_i=0^o c_i*(xhi^i - xlo^i)/i
-  real(rk), intent(in) :: c(10)
-  integer, intent(in) :: o
-  real(rk) :: v
-  integer :: i
-
-  v = 0
-  do i = 0,o
-    v = v + c(i+1)*polyline(i)
-  end do ! i
-end function ipolyline
+integer function npts(elm, degree)
+!! Number of points of a rule
+  integer, intent(in) :: elm, degree(:)
+  type(cubature) :: q
+  q = cubature(elm, degree)
+  npts = q%npoints
+end function npts
 
 !***********************************************************************
 
-pure function ipolysquare(c,o) result(v)
-!! Evaluate polynomial integral over square domain
-  real(rk), intent(in) :: c(10,10)
-  integer, intent(in) :: o
-  real(rk) :: v
+subroutine check_rule(q)
+!! Check exactness, positivity, interior points and consistency of a rule
 
-  integer :: i, j
+  type(cubature), intent(in) :: q
 
-  v = 0
-  do i = 0,o
-    do j = 0,o-i
-      v = v + c(i+1,j+1)*polyline(i)*polyline(j)
-    end do ! j
-  end do ! i
+  character(40) :: label
+  integer :: a, b, c, e(3)
+  real(rk) :: numerical, exact
+  real(rk), allocatable :: f(:)
 
-end function ipolysquare
+  write(label,"(I0,' [',I0,',',I0,',',I0,']')") q%elm, q%degree
 
-!***********************************************************************
+  call expect(q%is_valid(), trim(label)//" is_valid")
+  call expect(all(q%weights > 0), trim(label)//" positive weights")
+  call expect(inside(q), trim(label)//" interior abscissae")
 
-pure function ipolytriangle(c,o) result(v)
-!! Evaluate polynomial integral over triangular domain
-  real(rk), intent(in) :: c(10,10)
-  integer, intent(in) :: o
-  real(rk) :: v
+  do c = 0, maxval(q%degree)
+    do b = 0, maxval(q%degree)
+      do a = 0, maxval(q%degree)
+        if (.not. in_space(q%elm, q%degree, a, b, c)) cycle
+        e = [a, b, c]
+        f = product(q%abscissae**spread(e(1:q%dim), 2, q%npoints), dim=1)
+        numerical = sum(q%weights*f)
+        exact = monomial_integral(q%elm, a, b, c)
+        if (abs(numerical - exact) > tol*max(1.0_rk, abs(exact))) then
+          call expect(.false., trim(label)//" exactness")
+          write(*,"(4X,'x^',I0,' y^',I0,' z^',I0,': ',2ES24.16)") a, b, c, numerical, exact
+          return
+        end if
+      end do
+    end do
+  end do
 
-  integer :: i, j
-
-  v = 0
-  do i = 0,o
-    do j = 0,o-i
-      v = v + c(i+1,j+1)*polytri(i, j)
-    end do ! j
-  end do ! i
-
-end function ipolytriangle
-
-!***********************************************************************
-
-pure function ipolycube(c,o) result(v)
-!! Evaluate polynomial integral over cube domain
-  real(rk), intent(in) :: c(10,10,10)
-  integer, intent(in) :: o
-  real(rk) :: v
-
-  integer :: i, j, k
-
-  v = 0
-  do i = 0,o
-    do j = 0,o-i
-      do k = 0,o-i-j
-        v = v + c(i+1,j+1,k+1)*polyline(i)*polyline(j)*polyline(k)
-      end do ! k
-    end do ! j
-  end do ! i
-
-end function ipolycube
+end subroutine check_rule
 
 !***********************************************************************
 
-pure function ipolytet(c,o) result(v)
-!! Evaluate polynomial integral over tetrahedral domain
-  real(rk), intent(in) :: c(10,10,10)
-  integer, intent(in) :: o
-  real(rk) :: v
+logical function in_space(elm, p, a, b, c)
+!! True if \(x^a y^b z^c\) is in the polynomial space of degree `p`
 
-  integer :: i, j, k
+  integer, intent(in) :: elm, p(3), a, b, c
 
-  v = 0
-  do i = 0,o
-    do j = 0,o-i
-      do k = 0,o-i-j
-        v = v + c(i+1,j+1,k+1)*polytet(i, j, k)
-      end do ! k
-    end do ! j
-  end do ! i
+  select case (elm)
+  case (CUB_LIN); in_space = a <= p(1) .and. b == 0 .and. c == 0
+  case (CUB_QUA); in_space = a <= p(1) .and. b <= p(2) .and. c == 0
+  case (CUB_HEX); in_space = a <= p(1) .and. b <= p(2) .and. c <= p(3)
+  case (CUB_TRI); in_space = a + b <= p(1) .and. c == 0
+  case (CUB_TET); in_space = a + b + c <= p(1)
+  case (CUB_WED); in_space = a + b <= p(1) .and. c <= p(2)
+  case default;   in_space = .false.
+  end select
 
-end function ipolytet
+end function in_space
 
 !***********************************************************************
 
-pure function ipolywedge(c,o) result(v)
-!! Evaluate polynomial integral over prismatic domain
-  real(rk), intent(in) :: c(10,10,10)
-  integer, intent(in) :: o
-  real(rk) :: v
+real(rk) function monomial_integral(elm, a, b, c) result(r)
+!! Exact integral of \(x^a y^b z^c\) over the reference element
 
-  integer :: i, j, k
+  integer, intent(in) :: elm, a, b, c
 
-  v = 0
-  do i = 0,o
-    do j = 0,o-i
-      do k = 0,o-i-j
-        v = v + c(i+1,j+1,k+1)*polytri(i,j)*polyline(k)
-      end do ! k
-    end do ! j
-  end do ! i
+  select case (elm)
+  case (CUB_LIN); r = line(a)
+  case (CUB_QUA); r = line(a)*line(b)
+  case (CUB_HEX); r = line(a)*line(b)*line(c)
+  case (CUB_TRI); r = simplex([a, b])
+  case (CUB_TET); r = simplex([a, b, c])
+  case (CUB_WED); r = simplex([a, b])*line(c)
+  case default;   r = huge(r)
+  end select
 
-end function ipolywedge
+end function monomial_integral
 
 !***********************************************************************
 
-pure elemental integer function factorial(n) result(f)
-!! Basic factorial function
-  integer, intent(in) :: n
-  integer :: i
-  f = 1
-  do i = 1,n
-    f = f*i
-  end do ! i
-end function factorial
+real(rk) function line(a)
+!! \(\int_{-1}^{1} x^a\,dx\)
+  integer, intent(in) :: a
+  line = merge(2.0_rk/(a + 1), 0.0_rk, mod(a, 2) == 0)
+end function line
 
 !***********************************************************************
 
-pure elemental real(rk) function polytri(m,n) result(f)
-!! Value of polynomial integral over triangular domain
-!! int_0^1 int_0^(1-x) x^m*y^n dy dx
-  integer, intent(in) :: m, n
-  f = 1.0_rk*factorial(m)*factorial(n)/factorial(m+n+2)
-end function polytri
+real(rk) function simplex(e)
+!! \(\int x_1^{e_1} \cdots x_d^{e_d}\) over the unit simplex,
+!! \(= \prod e_i! / (d + \sum e_i)!\)
+  integer, intent(in) :: e(:)
+  simplex = product(gamma(e + 1.0_rk))/gamma(size(e) + sum(e) + 1.0_rk)
+end function simplex
 
 !***********************************************************************
 
-pure elemental real(rk) function polytet(m,n,p) result(f)
-!! Value of polynomial integral over tetrahedral domain
-!! int_0^1 int_0^(1-x) int_0^(1-x-y) x^m*y^n*z^p dz dy dx
-  integer, intent(in) :: m, n, p
-  f = 1.0_rk*factorial(m)*factorial(n)*factorial(p)/factorial(m+n+p+3)
-end function polytet
+logical function inside(q)
+!! True if every abscissa is strictly inside the reference element
+
+  type(cubature), intent(in) :: q
+
+  associate (x => q%abscissae)
+    select case (q%elm)
+    case (CUB_LIN, CUB_QUA, CUB_HEX)
+      inside = all(abs(x) < 1)
+    case (CUB_TRI, CUB_TET)
+      inside = all(x > 0) .and. all(sum(x, dim=1) < 1)
+    case (CUB_WED)
+      inside = all(x(1:2,:) > 0) .and. all(sum(x(1:2,:), dim=1) < 1) &
+         .and. all(abs(x(3,:)) < 1)
+    case default
+      inside = .false.
+    end select
+  end associate
+
+end function inside
 
 !***********************************************************************
 
-pure elemental real(rk) function polyline(m) result(f)
-!! Value of polynomial integral over linear domain
-!! int_-1^1 x^m dx
-  integer, intent(in) :: m
+subroutine test_interface()
+!! Constructor, `set`, scalar vs array degree, ordering, reuse, destroy
 
-  if (mod(m,2) == 0) then
-    f = 2.0_rk/(m+1)
-  else
-    f = 0
-  end if
+  type(cubature) :: q, r
+  type(cubature) :: rules(6)
 
-end function polyline
+  call expect(.not. q%is_valid(), "default is not valid")
+
+  call q%set(CUB_HEX, 3)
+  r = cubature(CUB_HEX, [3, 3, 3])
+  call expect(same(q, r), "set(scalar) == cubature(array)")
+  call expect(all(q%degree == [3, 3, 3]), "scalar degree broadcast")
+
+  q = cubature(CUB_QUA, [3, 1])
+  call expect(q%npoints == 2, "QUA [3,1] points")
+  call expect(q%abscissae(1,1) /= q%abscissae(1,2) &
+        .and. q%abscissae(2,1) == q%abscissae(2,2), "first coordinate fastest")
+
+  q = cubature(CUB_WED, [0, 3])
+  call expect(q%abscissae(3,1) /= q%abscissae(3,2), "WED axial slowest")
+  call expect(all(q%degree == [0, 3, 0]), "WED degrees")
+
+  call q%set(CUB_HEX, 5)
+  call q%set(CUB_LIN, 1)
+  call expect(q%is_valid() .and. q%dim == 1 .and. q%npoints == 1, "reuse with smaller rule")
+
+  call q%destroy()
+  call expect(.not. q%is_valid() .and. q%elm == 0 .and. q%dim == 0 &
+        .and. q%npoints == 0, "destroy")
+
+  ! Rules indexed by element type, as in an FE element table
+  rules(CUB_LIN) = cubature(CUB_LIN, 2)
+  rules(CUB_TRI) = cubature(CUB_TRI, 2)
+  rules(CUB_QUA) = cubature(CUB_QUA, 2)
+  rules(CUB_TET) = cubature(CUB_TET, 2)
+  rules(CUB_HEX) = cubature(CUB_HEX, 2)
+  rules(CUB_WED) = cubature(CUB_WED, 2)
+  call expect(all([(rules(p)%elm == p, p = 1, 6)]), "rule table")
+
+end subroutine test_interface
+
+!***********************************************************************
+
+logical function same(q, r)
+!! True if two rules are identical
+  type(cubature), intent(in) :: q, r
+  same = q%elm == r%elm .and. q%dim == r%dim .and. all(q%degree == r%degree) &
+   .and. q%npoints == r%npoints
+  if (same) same = all(q%abscissae == r%abscissae) .and. all(q%weights == r%weights)
+end function same
+
+!***********************************************************************
+
+subroutine test_output()
+!! `summary` and `show` write complete, well-formatted output
+
+  type(cubature) :: q
+  character(200) :: line
+  integer :: u, n, ios
+  logical :: overflow
+
+  open(newunit=u, status="scratch", action="readwrite")
+  call q%summary(u)
+  q = cubature(CUB_HEX, [1, 3, 5])
+  call q%show(u)
+
+  rewind(u)
+  n = 0
+  overflow = .false.
+  do
+    read(u,"(A)",iostat=ios) line
+    if (ios /= 0) exit
+    n = n + 1
+    overflow = overflow .or. index(line, "*") > 0
+  end do
+  close(u)
+
+  ! 1 unset + 4 summary + 6 points + 1 sum
+  call expect(n == 12, "show line count")
+  call expect(.not. overflow, "no format overflow")
+
+end subroutine test_output
 
 !***********************************************************************
 

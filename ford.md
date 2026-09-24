@@ -1,6 +1,6 @@
 ---
 src_dir: src
-         app
+         example
          test
 output_dir: docs
 project: fortran_cubatures

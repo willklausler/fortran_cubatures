@@ -1,10 +1,10 @@
 name = "fortran_cubatures"
 version = "0.1.0"
-license = "license"
+license = "MIT"
 author = "Will Klausler"
 copyright = "Copyright 2025, Will Klausler"
 description = "Gaussian cubature derived type for finite elements"
-categories = ["numerical"]
+categories = ["numerical methods"]
 keywords = ["cubature", "quadrature", "finite-element", "numerical-integration"]
 homepage = "https://github.com/willklausler/fortran_cubatures"
 

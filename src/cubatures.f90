@@ -1,680 +1,584 @@
 module cubatures
-!! Define cubature derived type
+!! Numerical integration rules (cubatures) on the reference elements of
+!! the finite element method.
+!!
+!! A [[cubature]] holds the abscissae \(\xi_q\) and weights \(w_q\) of a
+!! rule such that
+!! \[ \int_{\hat\Omega} f(\xi)\,d\xi \approx \sum_{q=1}^{n} w_q\, f(\xi_q) \]
+!! on the reference element \(\hat\Omega\).
+!!
+!! ## Element types and reference domains
+!!
+!! | Constant  | Element       | Reference domain                          | Measure |
+!! |-----------|---------------|-------------------------------------------|---------|
+!! | `CUB_LIN` | line          | \([-1,1]\)                                | 2       |
+!! | `CUB_TRI` | triangle      | \(x,y \ge 0,\ x+y \le 1\)                 | 1/2     |
+!! | `CUB_QUA` | quadrilateral | \([-1,1]^2\)                              | 4       |
+!! | `CUB_TET` | tetrahedron   | \(x,y,z \ge 0,\ x+y+z \le 1\)             | 1/6     |
+!! | `CUB_HEX` | hexahedron    | \([-1,1]^3\)                              | 8       |
+!! | `CUB_WED` | wedge / prism | triangle \(\times\ [-1,1]\)               | 1       |
+!!
+!! Triangle and tetrahedron abscissae are the Cartesian coordinates on the
+!! unit simplex, which equal the leading barycentric (area / volume)
+!! coordinates; the last barycentric coordinate is \(1 - \sum_i \xi_i\).
+!!
+!! ## Degree of exactness
+!!
+!! Rules are selected by their *degree of exactness* \(p\):
+!!
+!! - `CUB_TRI`, `CUB_TET`: all polynomials of total degree \(\le p\).
+!! - `CUB_LIN`, `CUB_QUA`, `CUB_HEX`: all polynomials of degree \(\le p_i\)
+!!   in each coordinate \(i\) (tensor-product Gauss–Legendre with
+!!   \(p_i/2 + 1\) points per direction). One degree or one per direction.
+!! - `CUB_WED`: total degree \(\le p_1\) in the triangle coordinates and
+!!   degree \(\le p_2\) in the axial coordinate. One or two degrees.
+!!
+!! All rules have positive weights and interior abscissae. Triangle rules of
+!! degree 2, 4 and 5 and the tetrahedron rule of degree 2 are the tabulated
+!! symmetric rules; all other simplex rules are collapsed (conical product)
+!! Gauss–Jacobi rules, available for any degree.
+!!
+!! ## Point ordering
+!!
+!! Tensor-product rules vary the first coordinate fastest. Wedge rules
+!! vary the triangle point fastest and the axial point slowest.
+!!
+!! ## References
+!!
+!! 1. Abramowitz, M., Stegun, I. A. (1964). *Handbook of Mathematical
+!!    Functions*, §22 and §25.4. National Bureau of Standards.
+!! 2. Stroud, A. H. (1971). *Approximate Calculation of Multiple Integrals*.
+!!    Prentice-Hall.
+!! 3. Radon, J. (1948). Zur mechanischen Kubatur. *Monatshefte für
+!!    Mathematik*, 52, 286–300.
+!! 4. Dunavant, D. A. (1985). High degree efficient symmetrical Gaussian
+!!    quadrature rules for the triangle. *International Journal for
+!!    Numerical Methods in Engineering*, 21(6), 1129–1148.
+!! 5. Karniadakis, G. E., Sherwin, S. J. (2005). *Spectral/hp Element
+!!    Methods for Computational Fluid Dynamics*, 2nd ed.
+!!    Oxford University Press.
+!! 6. Zienkiewicz, O. C., Taylor, R. L., Zhu, J. Z. (2005). *The Finite
+!!    Element Method: Its Basis and Fundamentals*, 6th ed.
+!!    Butterworth-Heinemann.
 
-  use iso_fortran_env, only: rk => real64, stdout => output_unit
+  use iso_fortran_env, only: rk => real64, output_unit
 
   implicit none
 
   private
 
-  character(3), parameter :: elmtypes(*) = &
-    [ "LIN",   "TRI",   "QUA",    "TET",  "HEX",  "WEJ"]
+  public :: rk
+  public :: cubature
+  public :: CUB_LIN, CUB_TRI, CUB_QUA, CUB_TET, CUB_HEX, CUB_WED
 
-  real(rk), parameter :: volumes(*) = &
-    [2.0_rk, 1.0_rk/2, 4.0_rk, 1.0_rk/6, 8.0_rk, 1.0_rk]
+  integer, parameter :: CUB_LIN = 1 !! Line element
+  integer, parameter :: CUB_TRI = 2 !! Triangle element
+  integer, parameter :: CUB_QUA = 3 !! Quadrilateral element
+  integer, parameter :: CUB_TET = 4 !! Tetrahedron element
+  integer, parameter :: CUB_HEX = 5 !! Hexahedron element
+  integer, parameter :: CUB_WED = 6 !! Wedge (prism) element
 
-  integer, parameter :: maxorders(*) = &
-    [     5,        3,      5,        3,      5,      3]
+  character(3), parameter :: names(6) = ["LIN", "TRI", "QUA", "TET", "HEX", "WED"]
+    !! Element names, indexed by element type
+  integer, parameter :: dims(6) = [1, 2, 2, 3, 3, 3]
+    !! Spatial dimension, indexed by element type
+  integer, parameter :: ndegrees(6) = [1, 1, 2, 1, 3, 2]
+    !! Number of independent degrees, indexed by element type
 
-  public :: elmtypes, volumes, maxorders
+  real(rk), parameter :: pi = acos(-1.0_rk)
 
-  type :: Cubature
-    !! This derived type holds data, weights, and abscissae for numerical
-    !! integration of 2D (triangle, quadrilaterals) and 3D bodies (tetrahedrons,
-    !! hexahedrons, and wedges)
+  type :: cubature
+    !! Abscissae and weights of an integration rule on a reference element.
     !!
-    !! Note: Cubatures for triangles and tetrahedrons use body coordinates,
-    !! and the condition x1 + x2 + x3 (+ x4) = 1 permits the elimination of
-    !! the final coordinate. For wedges, the first two coordinates are body,
-    !! the last is ordinary.
-    !!
-    !! Domains:
-    !! LINear - [-1, 1]
-    !! QUAdrilateral - [-1, 1] x [-1, 1]
-    !! TRIangle - [0, 1] x [0, 1-x]
-    !! HEXahedron - [-1, 1] x [-1, 1] x [-1, 1]
-    !! TETrahedron - [0, 1] x [0, 1-x] x [0, 1-x-y]
-    !! WEJ/prism - [0, 1] x [0, 1-x] x [-1, 1]
+    !! Create with the constructor, `q = cubature(CUB_HEX, 3)`, or in place
+    !! with `call q%set(CUB_HEX, 3)`. Integrate with
+    !! `sum(q%weights * f(q%abscissae))` or a loop over `q%npoints`.
 
-    character(3) :: elmtype = ""              !! Element type: TRI, QUA, TET, HEX, WEJ
-    integer :: dime = 0                       !! Element dimension
-    integer :: orders(3) = 0                  !! Order of cubature
-    integer :: points = 0                     !! Number of cubature points
-    real(rk), allocatable :: abscissae(:,:)   !! Abscissae (coordinates)
-    real(rk), allocatable :: weights(:)       !! Weights
-
-    integer :: ounit = stdout
+    integer :: elm = 0                        !! Element type, `CUB_*`
+    integer :: dim = 0                        !! Spatial dimension
+    integer :: degree(3) = 0                  !! Degree of exactness, see module documentation
+    integer :: npoints = 0                    !! Number of points
+    real(rk), allocatable :: abscissae(:,:)   !! Abscissae, shape `[dim, npoints]`
+    real(rk), allocatable :: weights(:)       !! Weights, shape `[npoints]`
 
   contains
 
-    ! Fulfill object requirements
-    procedure :: check
+    generic :: set => set_iso, set_aniso      !! Build the rule in place
+    procedure, private :: set_iso
+    procedure, private :: set_aniso
+    procedure :: is_valid
     procedure :: summary
     procedure :: show
     procedure :: destroy
 
-    ! Unique procedures
-    procedure :: set
-    final :: destroy_final
-  end type Cubature
+  end type cubature
 
-  public :: Cubature
-
-  public :: counter
+  interface cubature
+    !! Construct a rule, e.g. `cubature(CUB_TRI, 4)` or `cubature(CUB_HEX, [3, 3, 1])`
+    module procedure new_iso
+    module procedure new_aniso
+  end interface cubature
 
 contains
 
 !***********************************************************************
 
-pure function check(self)
-!! Check integrity of derived type
+pure function new_iso(elm, degree) result(self)
+!! Construct a rule of degree `degree` in every direction
 
-  class(cubature), intent(in) :: self
-  logical :: check
+  integer, intent(in) :: elm       !! Element type, `CUB_*`
+  integer, intent(in) :: degree    !! Degree of exactness
+  type(cubature) :: self
 
-  check = (allocated(self%abscissae) .neqv. allocated(self%weights))
+  call self%set(elm, [degree])
 
-end function check
+end function new_iso
 
 !***********************************************************************
 
-subroutine summary(self)
-!! Summarize cubature scheme
+pure function new_aniso(elm, degree) result(self)
+!! Construct a rule with per-direction degrees
+
+  integer, intent(in) :: elm         !! Element type, `CUB_*`
+  integer, intent(in) :: degree(:)   !! Degrees of exactness, size 1 or number of directions
+  type(cubature) :: self
+
+  call self%set(elm, degree)
+
+end function new_aniso
+
+!***********************************************************************
+
+pure subroutine set_iso(self, elm, degree)
+!! Build a rule of degree `degree` in every direction
+
+  class(cubature), intent(inout) :: self
+  integer, intent(in) :: elm       !! Element type, `CUB_*`
+  integer, intent(in) :: degree    !! Degree of exactness
+
+  call self%set(elm, [degree])
+
+end subroutine set_iso
+
+!***********************************************************************
+
+pure subroutine set_aniso(self, elm, degree)
+!! Build a rule with per-direction degrees.
+!!
+!! `degree` has size 1 (same degree in every direction) or `ndegrees(elm)`:
+!! 1 for `CUB_LIN`, `CUB_TRI`, `CUB_TET`; 2 for `CUB_QUA`, `CUB_WED`
+!! (triangle, axial); 3 for `CUB_HEX`. Stops on invalid input.
+
+  class(cubature), intent(inout) :: self
+  integer, intent(in) :: elm         !! Element type, `CUB_*`
+  integer, intent(in) :: degree(:)   !! Degrees of exactness
+
+  integer :: p(3)   ! Degrees, padded with 0
+  integer :: n      ! Number of independent degrees
+
+  if (elm < 1 .or. elm > size(names)) error stop "cubature%set: invalid element type"
+  if (any(degree < 0)) error stop "cubature%set: degree must be non-negative"
+
+  n = ndegrees(elm)
+  p = 0
+  if (size(degree) == 1) then
+    p(1:n) = degree(1)
+  else if (size(degree) == n) then
+    p(1:n) = degree
+  else
+    error stop "cubature%set: size(degree) must be 1 or the number of element directions"
+  end if
+
+  call self%destroy()
+  self%elm = elm
+  self%dim = dims(elm)
+  self%degree = p
+
+  select case (elm)
+  case (CUB_LIN, CUB_QUA, CUB_HEX)
+    call tensor_rule(p(1:n), self%abscissae, self%weights)
+  case (CUB_TRI)
+    call triangle_rule(p(1), self%abscissae, self%weights)
+  case (CUB_TET)
+    call tetrahedron_rule(p(1), self%abscissae, self%weights)
+  case (CUB_WED)
+    call wedge_rule(p(1), p(2), self%abscissae, self%weights)
+  end select
+
+  self%npoints = size(self%weights)
+
+end subroutine set_aniso
+
+!***********************************************************************
+
+pure logical function is_valid(self)
+!! True if the rule is set and its arrays are consistent
 
   class(cubature), intent(in) :: self
 
-  associate (u => self%ounit)
-    write(u,"(A20,A)") "Element type: ", self%elmtype
-    write(u,"(A20,I0)") "Element dimension: ", self%dime
-    write(u,"(A20,3(I1,:,','))") "Element orders: ", self%orders
-    write(u,"(A20,I0)") "Element points: ", self%points
-  end associate
+  is_valid = allocated(self%abscissae) .and. allocated(self%weights)
+  if (.not. is_valid) return
+  is_valid = self%npoints > 0 &
+       .and. size(self%weights) == self%npoints &
+       .and. all(shape(self%abscissae) == [self%dim, self%npoints])
+
+end function is_valid
+
+!***********************************************************************
+
+subroutine summary(self, unit)
+!! Write element type, dimension, degrees and number of points
+
+  class(cubature), intent(in) :: self
+  integer, intent(in), optional :: unit   !! Output unit, default `output_unit`
+
+  integer :: u
+
+  u = output_unit
+  if (present(unit)) u = unit
+
+  if (self%elm == 0) then
+    write(u,"(A)") "cubature: not set"
+    return
+  end if
+
+  write(u,"(A,A)")              "Element:   ", names(self%elm)
+  write(u,"(A,I0)")             "Dimension: ", self%dim
+  write(u,"(A,*(I0,:,', '))")   "Degree:    ", self%degree(1:ndegrees(self%elm))
+  write(u,"(A,I0)")             "Points:    ", self%npoints
 
 end subroutine summary
 
 !***********************************************************************
 
-subroutine show(self)
-!! Print cubature scheme to output
+subroutine show(self, unit)
+!! Write the summary, every abscissa and weight, and the weight sum
 
-  class(Cubature), intent(in) :: self
+  class(cubature), intent(in) :: self
+  integer, intent(in), optional :: unit   !! Output unit, default `output_unit`
 
-  integer :: i
+  integer :: u, q
 
-  character(*), parameter :: fmt0 = "*(G0,:,', ')"
-  character(*), parameter :: fmt1 = "(I3,')',1x,"//fmt0//")"
-  character(*), parameter :: fmt2 = "('Chk:',1x,"//fmt0//")"
+  u = output_unit
+  if (present(unit)) u = unit
 
-  write(self%ounit,"(A)") "CUBATURE DATA"
+  call self%summary(u)
+  if (.not. self%is_valid()) return
 
-  select case (self%elmtype)
-
-  ! Information on lines
-  case ("LIN")
-    write(self%ounit,"(A,1I2,1x,A)") "LIN", self%orders(1), "Abscissae (1), Weight"
-    do i = 1,self%points
-      write(self%ounit,fmt1) i, self%abscissae(:,i), self%weights(i)
-    end do ! i
-    write(self%ounit,fmt2) sum(self%abscissae(1,:)), sum(self%weights)
-
-  ! Information on quadrilaterals
-  case ("QUA")
-    write(self%ounit,"(A,2I2,1x,A)") "QUA", self%orders(1:2), "Abscissae (2), Weight"
-    do i = 1,self%points
-      write(self%ounit,fmt1) i, self%abscissae(:,i), self%weights(i)
-    end do ! i
-    write(self%ounit,fmt2) (sum(self%abscissae(i,:)), i=1,2), sum(self%weights)
-
-  ! Information on triangles
-  case ("TRI")
-    write(self%ounit,"(A,1I2,1x,A)") "TRI", self%orders(1), "Abscissae (2), Coord 3, Weight"
-    do i = 1,self%points
-      write(self%ounit,fmt1) i, &
-                             self%abscissae(:,i), &
-                             1-sum(self%abscissae(:,i)), self%weights(i)
-    end do ! i
-    write(self%ounit,fmt2) (sum(self%abscissae(i,:))/self%points, i=1,2), &
-                           1-sum(self%abscissae(:,:))/self%points, &
-                           sum(self%weights)
-
-  ! Information on hexahedra
-  case ("HEX")
-    write(self%ounit,"(A,3I2,1x,A)") "HEX", self%orders, "Abscissae (3), Weight"
-    do i = 1,self%points
-      write(self%ounit,fmt1) i, self%abscissae(:,i), self%weights(i)
-    end do ! i
-    write(self%ounit,fmt2) (sum(self%abscissae(i,:)), i=1,3), sum(self%weights)
-
-  ! Information on tetrahedra
-  case ("TET")
-    write(self%ounit,"(A,1I2,1x,A)") "TET", self%orders(1), "Abscissae (3), Coord 4, Weight"
-    do i = 1,self%points
-      write(self%ounit,fmt1) i, &
-                             self%abscissae(:,i), &
-                             1-sum(self%abscissae(:,i)), self%weights(i)
-    end do ! i
-    write(self%ounit,fmt2) (sum(self%abscissae(i,:))/self%points, i=1,3), &
-                           1-sum(self%abscissae(:,:))/self%points, &
-                           sum(self%weights)
-
-  ! Information on wedges
-  case ("WEJ")
-    write(self%ounit,"(A,1I2,1x,A)") "WEJ", self%orders(1), "Abscissae (1-2), Coord 3, Abscissa 3, Weight"
-    do i = 1,self%points
-      write(self%ounit,fmt1) i, &
-                             self%abscissae(1:2,i), &
-                             1-sum(self%abscissae(1:2,i)), &
-                             self%abscissae(3,i), &
-                             self%weights(i)
-    end do ! i
-    write(self%ounit,fmt2)   sum(self%abscissae(1  ,:))/self%points, &
-                             sum(self%abscissae(2  ,:))/self%points, &
-                           1-sum(self%abscissae(1:2,:))/self%points, &
-                             sum(self%abscissae(3  ,:))/self%points, &
-                             sum(self%weights)
-
-  end select
-
-write(self%ounit,*)
+  do q = 1, self%npoints
+    write(u,"(I4,')',*(1X,ES23.15E3))") q, self%abscissae(:,q), self%weights(q)
+  end do
+  write(u,"(A,ES23.15E3)") "Sum of weights: ", sum(self%weights)
 
 end subroutine show
 
 !***********************************************************************
 
 pure subroutine destroy(self)
-!! wipe data and memory
+!! Deallocate and reset to the unset state
 
-  class(Cubature), intent(inout) :: self
+  class(cubature), intent(inout) :: self
 
-  self%elmtype = ""
-  self%orders  = 0
-  self%points  = 0
+  self%elm     = 0
+  self%dim     = 0
+  self%degree  = 0
+  self%npoints = 0
   if (allocated(self%abscissae)) deallocate(self%abscissae)
-  if (allocated(self%weights  )) deallocate(self%weights)
-  self%ounit = stdout
+  if (allocated(self%weights))   deallocate(self%weights)
 
 end subroutine destroy
 
 !***********************************************************************
 
-pure subroutine destroy_final(self)
-!! Destroy derived type
-  type(Cubature), intent(inout) :: self
-  call self%destroy()
-end subroutine destroy_final
+pure subroutine tensor_rule(p, x, w)
+!! Tensor product of Gauss–Legendre rules, first direction fastest
+
+  integer, intent(in) :: p(:)                        !! Degree per direction
+  real(rk), allocatable, intent(out) :: x(:,:)       !! Abscissae
+  real(rk), allocatable, intent(out) :: w(:)         !! Weights
+
+  integer :: n(size(p))                              ! Points per direction
+  real(rk) :: x1(maxval(p)/2+1, size(p))             ! 1D abscissae per direction
+  real(rk) :: w1(maxval(p)/2+1, size(p))             ! 1D weights per direction
+  integer :: i, j, q, r
+
+  n = p/2 + 1
+  do i = 1, size(p)
+    call gauss_jacobi(n(i), 0, x1(:n(i),i), w1(:n(i),i))
+  end do
+
+  allocate(x(size(p), product(n)), w(product(n)))
+  do q = 1, size(w)
+    r = q - 1
+    w(q) = 1
+    do i = 1, size(p)
+      j = mod(r, n(i)) + 1
+      r = r/n(i)
+      x(i,q) = x1(j,i)
+      w(q) = w(q)*w1(j,i)
+    end do
+  end do
+
+end subroutine tensor_rule
 
 !***********************************************************************
 
-pure subroutine set(self, elmtype,order)
-!! Set cubature scheme by inputting shape and order
+pure subroutine triangle_rule(p, x, w)
+!! Rule of total degree `p` on the unit triangle
 
-  class(Cubature), intent(inout) :: self
-  character(3), intent(in) :: elmtype       !! Element type: TRI, QUA, TET, HEX, WEJ
-  integer, intent(in) :: order(:)    !! Cubature order: size 1 or dimension
+  integer, intent(in) :: p                           !! Degree of exactness
+  real(rk), allocatable, intent(out) :: x(:,:)       !! Abscissae, shape `[2, n]`
+  real(rk), allocatable, intent(out) :: w(:)         !! Weights
 
-  integer :: i, j, k     !! Iterators
-  integer :: n           !! Index of abscissae
+  select case (p)
 
-  ! Wipe any existing data
-  call self%destroy()
-
-  ! Set data
-  self%elmtype = elmtype
-  select case (self%elmtype)
-  case ("LIN")
-    self%dime = 1
-  case ("TRI","QUA")
-    self%dime = 2
-  case ("HEX","TET","WEJ")
-    self%dime = 3
-  end select
-
-  ! Read order
-  select case (size(order,1))
-  case (1)
-    self%orders(1) = order(1)
-    if (self%orders(1) > 0) then
-      self%orders(1:self%dime) = order(1)
-      self%orders(self%dime+1:3) = 1
-    end if
+  ! 3 points, interior (Zienkiewicz et al. 2005)
   case (2)
-    if ((self%elmtype == "HEX") .or. (self%elmtype == "TET") .or. (self%elmtype == "WEJ")) then
-      error stop "cubatures%set: Invalid order array for 3D"
-    end if
-    if (self%elmtype == "LIN") then
-      error stop "cubatures%set: Invalid order array for 1D"
-    end if
-    self%orders(1:2) = order
-    self%orders(3)   = 1
-  case (3)
-    if ((self%elmtype == "QUA") .or. (self%elmtype == "TRI")) then
-      error stop "cubatures%set: Invalid order array for 2D"
-    end if
-    if (self%elmtype == "LIN") then
-      error stop "cubatures%set: Invalid order array for 1D"
-    end if
-    self%orders = order
-  end select
-
-  select case (self%elmtype)
-
-  case ("LIN")
-
-    self%points = self%orders(1)
-
-    ! Allocate memory
-    allocate(self%abscissae(1:1,1:self%points))
-    allocate(self%weights(1:self%points))
-
-    block
-      real(rk) :: abscissae(maxval(self%orders))
-      real(rk) :: weights(maxval(self%orders))
-
-      ! Retrieve lineature
-      call gauss(self%orders(1), abscissae,weights)
-
-      ! Accumulate cubature
-      do i = 1, self%orders(1)
-        n = counter(i,1,1,self%orders)
-        self%abscissae(1,n) = abscissae(i)
-        self%weights(n)     = weights(i)
-      end do ! i
-
-    end block
-
-  case ("QUA")
-
-    self%points = self%orders(1)*self%orders(2)
-
-    ! Allocate memory
-    allocate(self%abscissae(1:2,1:self%points))
-    allocate(self%weights(1:self%points))
-
-    block
-      real(rk) :: abscissae(maxval(self%orders),2)
-      real(rk) :: weights(maxval(self%orders),2)
-
-      ! Retrieve lineature
-      call gauss(self%orders(1), abscissae(:,1),weights(:,1))
-      call gauss(self%orders(2), abscissae(:,2),weights(:,2))
-
-      ! Accumulate cubature
-      do i = 1,self%orders(1)
-        do j = 1,self%orders(2)
-          n = counter(i,j,1,self%orders)
-          self%abscissae(:,n) = [abscissae(i,1), abscissae(j,2)]
-          self%weights(n)     =    weights(i,1)*   weights(j,2)
-        end do ! j
-      end do ! i
-
-    end block
-
-  case ("TRI")
-
-    select case (self%orders(1))
-
-    ! 1-Point triangle quadrature
-    case (1)
-
-      self%points = 1
-
-      allocate(self%abscissae(1:2,1:self%points))
-      allocate(self%weights(1:self%points))
-
-      self%abscissae(:,1) = 1.0_rk/3
-      self%weights(1) = 1.0_rk/2
-
-    ! 3-Point triangle quadrature - interior (see Zienkiewicz & Taylor)
-    case (2)
-
-      self%points = 3
-
-      allocate(self%abscissae(1:2,1:self%points))
-      allocate(self%weights(1:self%points))
-
-      self%abscissae      = 1.0_rk/6
-      self%abscissae(1,1) = 2.0_rk/3
-      self%abscissae(2,2) = 2.0_rk/3
-
-      self%weights = 1.0_rk/6
-
-    ! 4-Point triangle quadrature - interior
-    case (3)
-
-      self%points = 4
-
-      allocate(self%abscissae(1:2,1:self%points))
-      allocate(self%weights(1:self%points))
-
-      self%abscissae(:,1)   = 1.0_rk/3
-      self%abscissae(:,2:4) = 0.2_rk
-      self%abscissae(1,2)   = 0.6_rk
-      self%abscissae(2,3)   = 0.6_rk
-
-      self%weights(1)   = -27.0_rk/96
-      self%weights(2:4) =  25.0_rk/96
-
-    case default
-      error stop "Cubature%set: Invalid order for triangle"
-    end select
-
-  case ("HEX")
-
-    if (self%orders(2) > 0) then
-
-      self%points = product(self%orders)
-
-      ! Allocate memory
-      allocate(self%abscissae(1:3,1:self%points))
-      allocate(self%weights(1:self%points))
-
-      block
-        real(rk) :: abscissae(maxval(self%orders),3)
-        real(rk) :: weights(maxval(self%orders),3)
-
-        ! Retrieve lineature
-        do i = 1,3
-          call gauss(self%orders(i), abscissae(:,i),weights(:,i))
-        end do ! i
-
-        ! Accumulate cubature
-        do i = 1, self%orders(1)
-          do j = 1, self%orders(2)
-            do k = 1, self%orders(3)
-              n = counter(i,j,k,self%orders)
-              self%abscissae(:,n) = [abscissae(i,1), abscissae(j,2), abscissae(k,3)]
-              self%weights(n)     =    weights(i,1)*   weights(j,2)*   weights(k,3)
-            end do ! k
-          end do ! j
-        end do ! i
-
-      end block
-
-    ! 4-Point hexahedron cubature
-    else if (self%orders(1) == -4) then
-
-      self%points = 4
-
-      allocate(self%abscissae(1:3,1:self%points))
-      allocate(self%weights(1:self%points))
-
-      block
-        real(rk), parameter :: sqrt13 = sqrt(1.0_rk/3)
-
-        self%abscissae(:,1) = [-sqrt13, -sqrt13, -sqrt13]
-        self%abscissae(:,2) = [ sqrt13,  sqrt13, -sqrt13]
-        self%abscissae(:,3) = [ sqrt13, -sqrt13,  sqrt13]
-        self%abscissae(:,4) = [-sqrt13,  sqrt13,  sqrt13]
-        self%weights = 2
-      end block
-
-    ! 9-Point hexahedron cubature
-    else if (self%orders(1) == -9) then
-
-      self%points = 9
-
-      allocate(self%abscissae(1:3,1:self%points))
-      allocate(self%weights(1:self%points))
-
-      block
-        real(rk), parameter :: sqrt35 = sqrt(3.0_rk/5)
-        real(rk), parameter :: tick(1:2) = [-sqrt35, sqrt35]
-
-        self%weights(1:8) = 5.0_rk/9
-        self%weights(9)   = 32.0_rk/9
-
-        do i = 1,2
-          do j = 1,2
-            do k = 1,2
-              n = counter(i,j,k,[2, 2, 2])
-              self%abscissae(:,n) = [tick(k), tick(j), tick(i)]
-            end do ! k
-          end do ! j
-        end do ! i
-
-        self%abscissae(:,9) = 0
-      end block
-
-    else
-      error stop "Cubature%set: Invalid order for hexahedron"
-    end if
-
-  case ("TET")
-
-    select case (self%orders(1))
-
-    ! 1-Point tetrahedron cubature
-    case (1)
-
-      self%points = 1
-
-      allocate(self%abscissae(1:3,1:self%points))
-      allocate(self%weights(1:self%points))
-
-      self%abscissae(:,1) = 0.25_rk
-      self%weights(1)     = 1.0_rk/6
-
-    ! 4-Point tetrahedron cubature - interior (see Zienkiewicz & Taylor)
-    case (2)
-
-      self%points = 4
-
-      allocate(self%abscissae(1:3,1:self%points))
-      allocate(self%weights(1:self%points))
-
-      block
-        real(rk), parameter :: alpha = 0.5854101966249685_rk
-        real(rk), parameter ::  beta = 0.1381966011250105_rk
-
-        self%abscissae = beta
-        do i = 1,3
-          self%abscissae(i,i) = alpha
-        end do ! i
-      end block
-
-      self%weights = 1.0_rk/24
-
-    ! 5-Point tetrahedron cubature - interior
-    case (3)
-
-      self%points = 5
-
-      allocate(self%abscissae(1:3,1:self%points))
-      allocate(self%weights(1:self%points))
-
-      self%abscissae(:,1:4) = 1.0_rk/6
-      self%abscissae(1,1)   = 0.5_rk
-      self%abscissae(2,2)   = 0.5_rk
-      self%abscissae(3,3)   = 0.5_rk
-      self%abscissae(:,5)   = 0.25_rk
-
-      self%weights(1:4)     =  0.45_rk/6
-      self%weights(5)       = -0.8_rk/6
-
-    case default
-      error stop "Cubature%set: Invalid order for tetrahedron"
-    end select
-
-  case ("WEJ")
-
-    select case (self%orders(1))
-
-    ! 2-Point wedge cubature
-    case (1)
-
-      self%points = 2
-
-      allocate(self%abscissae(1:3,1:self%points))
-      allocate(self%weights(1:self%points))
-
-      block
-        real(rk) :: abscissae(2)
-        real(rk) :: weights(2)
-
-        call gauss(2, abscissae,weights)
-
-        self%abscissae(1:2,:) = 1.0_rk/3
-        self%abscissae(  3,:) = abscissae
-
-        self%weights = 0.5_rk*weights
-
-      end block
-
-    ! 9-Point wedge cubature
-    case (2)
-
-      self%points = 9
-
-      allocate(self%abscissae(1:3,1:self%points))
-      allocate(self%weights(1:self%points))
-
-      block
-        real(rk) :: abscissae(3)
-        real(rk) :: weights(3)
-
-        call gauss(3, abscissae,weights)
-
-        self%abscissae(1:2,:) = 1.0_rk/6
-        self%abscissae(1,1) = 2.0_rk/3
-        self%abscissae(2,2) = 2.0_rk/3
-        self%abscissae(1,4) = 2.0_rk/3
-        self%abscissae(2,5) = 2.0_rk/3
-        self%abscissae(1,7) = 2.0_rk/3
-        self%abscissae(2,8) = 2.0_rk/3
-
-        self%abscissae(3,1:3) = abscissae(1)
-        self%abscissae(3,4:6) = abscissae(2)
-        self%abscissae(3,7:9) = abscissae(3)
-
-        self%weights(1:3) = 1.0_rk/6*weights(1)
-        self%weights(4:6) = 1.0_rk/6*weights(2)
-        self%weights(7:9) = 1.0_rk/6*weights(3)
-
-      end block
-
-    ! 16-Point wedge cubature
-    case (3)
-
-      self%points = 16
-
-      allocate(self%abscissae(1:3,1:self%points))
-      allocate(self%weights(1:self%points))
-
-      block
-        real(rk) :: abscissae(4)
-        real(rk) :: weights(4)
-
-        call gauss(4, abscissae,weights)
-
-        do i = 1,4
-          self%abscissae(1:2,4*(i-1)+1) = 1.0_rk/3
-          self%abscissae(1:2,4*(i-1)+2) = [0.6_rk, 0.2_rk]
-          self%abscissae(1:2,4*(i-1)+3) = [0.2_rk, 0.6_rk]
-          self%abscissae(1:2,4*(i-1)+4) = 0.2_rk
-        end do ! i
-
-        self%abscissae(3, 1: 4) = abscissae(1)
-        self%abscissae(3, 5: 8) = abscissae(2)
-        self%abscissae(3, 9:12) = abscissae(3)
-        self%abscissae(3,13:16) = abscissae(4)
-
-        do i = 1,4
-          self%weights(4*(i-1)+1) = -27.0_rk/96*weights(i)
-          self%weights(4*(i-1)+2) =  25.0_rk/96*weights(i)
-          self%weights(4*(i-1)+3) =  25.0_rk/96*weights(i)
-          self%weights(4*(i-1)+4) =  25.0_rk/96*weights(i)
-        end do ! i
-
-      end block
-
-    case default
-      error stop "Cubature%set: Invalid order for wedge"
-    end select
-
-  case default
-    error stop "Cubature%set: Invalid element type"
-  end select
-
-end subroutine set
-
-!***********************************************************************
-
-pure function counter(i,j,k,r) result(c)
-!! Count in base r - indexing starts at 1
-
-  integer, intent(in) :: i, j, k, r(3)
-  integer :: c
-
-  c = r(2)*r(3)*(i-1) + r(3)*(j-1) + (k-1) + 1
-
-end function counter
-
-!***********************************************************************
-
-pure subroutine gauss(order, abscissae,weights)
-!! Provide Gaussian lineature abscissae and weights given the order, for domain [-1, 1]
-
-  integer, intent(in) :: order           !! Order of integration
-  real(rk), intent(out) :: abscissae(order)  !! Abscissae (coordinates)
-  real(rk), intent(out) :: weights(order)    !! Weights
-
-  select case (order)
-
-  ! 1 point
-  case (1)
-    abscissae(1) = 0
-    weights(1)   = 2
-
-  ! 2 point
-  case (2)
-    block
-      real(rk), parameter :: sqrt13 = sqrt(1.0_rk/3)
-
-      abscissae = [-sqrt13, sqrt13]
-      weights   = [ 1.0_rk, 1.0_rk]
-    end block
-
-  ! 3 point
-  case (3)
-    block
-      real(rk), parameter :: sqrt35 = sqrt(0.6_rk)
-      real(rk), parameter :: frac59 = 5.0_rk/9
-      real(rk), parameter :: frac89 = 8.0_rk/9
-
-      abscissae = [-sqrt35, 0.0_rk, sqrt35]
-      weights   = [ frac59, frac89, frac59]
-    end block
-
-  ! 4 point
+    allocate(x(2,3), w(3))
+    x = reshape([4, 1, 1, 4, 1, 1], [2, 3])/6.0_rk
+    w = 1.0_rk/6
+
+  ! 6 points (Dunavant 1985)
   case (4)
     block
-      real(rk), parameter :: sr4d8 = sqrt(4.8_rk)
-      real(rk), parameter :: sr30  = sqrt(30.0_rk)
-      real(rk), parameter :: root1 = sqrt((3.0_rk - sr4d8)/7)
-      real(rk), parameter :: root2 = sqrt((3.0_rk + sr4d8)/7)
-      real(rk), parameter :: frac1 = 0.5_rk + sr30/36
-      real(rk), parameter :: frac2 = 0.5_rk - sr30/36
-
-      abscissae = [-root2, -root1, root1, root2]
-      weights   = [ frac2,  frac1, frac1, frac2]
+      real(rk), parameter :: a = 0.44594849091596488632_rk, wa = 0.22338158967801146570_rk/2
+      real(rk), parameter :: b = 0.09157621350977074346_rk, wb = 0.10995174365532186764_rk/2
+      allocate(x(2,6), w(6))
+      x(:,1:3) = orbit3(a)
+      x(:,4:6) = orbit3(b)
+      w = [wa, wa, wa, wb, wb, wb]
     end block
 
-  ! 5 point
+  ! 7 points (Radon 1948)
   case (5)
     block
-      real(rk), parameter :: sr107 = sqrt(10.0_rk/7)
-      real(rk), parameter :: sr70  = sqrt(70.0_rk)
-      real(rk), parameter :: root1 = sqrt(5.0_rk-2*sr107)/3
-      real(rk), parameter :: root2 = sqrt(5.0_rk+2*sr107)/3
-      real(rk), parameter :: frac1 = (322.0_rk+13*sr70)/900
-      real(rk), parameter :: frac2 = (322.0_rk-13*sr70)/900
-
-      abscissae = [-root2, -root1,       0.0_rk, root1, root2]
-      weights   = [ frac2,  frac1, 128.0_rk/225, frac1, frac2]
+      real(rk), parameter :: s15 = sqrt(15.0_rk)
+      real(rk), parameter :: a = (6 - s15)/21, wa = (155 - s15)/2400
+      real(rk), parameter :: b = (6 + s15)/21, wb = (155 + s15)/2400
+      allocate(x(2,7), w(7))
+      x(:,1) = 1.0_rk/3
+      x(:,2:4) = orbit3(a)
+      x(:,5:7) = orbit3(b)
+      w = [9.0_rk/80, wa, wa, wa, wb, wb, wb]
     end block
+
+  case default
+    call collapsed_triangle(p, x, w)
+
   end select
 
-end subroutine gauss
+end subroutine triangle_rule
+
+!***********************************************************************
+
+pure function orbit3(a) result(x)
+!! The 3 triangle points with barycentric coordinates \((a, a, 1-2a)\) permuted
+
+  real(rk), intent(in) :: a
+  real(rk) :: x(2,3)
+
+  x = reshape([a, a, 1-2*a, a, a, 1-2*a], [2, 3])
+
+end function orbit3
+
+!***********************************************************************
+
+pure subroutine collapsed_triangle(p, x, w)
+!! Collapsed Gauss–Jacobi rule of total degree `p` on the unit triangle.
+!!
+!! Maps \((u, v) \in [0,1]^2\) to \((x, y) = (u, (1-u)v)\), Jacobian
+!! \(1-u\), absorbed by Gauss–Jacobi \(\alpha = 1\) in \(u\)
+!! (Stroud 1971; Karniadakis & Sherwin 2005).
+
+  integer, intent(in) :: p                           !! Degree of exactness
+  real(rk), allocatable, intent(out) :: x(:,:)       !! Abscissae, shape `[2, n**2]`
+  real(rk), allocatable, intent(out) :: w(:)         !! Weights
+
+  real(rk) :: u(p/2+1), wu(p/2+1), v(p/2+1), wv(p/2+1)
+  integer :: i, j, n, q
+
+  n = p/2 + 1
+  call gauss_jacobi(n, 1, u, wu)
+  call gauss_jacobi(n, 0, v, wv)
+  u = (1 + u)/2;  wu = wu/4
+  v = (1 + v)/2;  wv = wv/2
+
+  allocate(x(2,n*n), w(n*n))
+  q = 0
+  do i = 1, n
+    do j = 1, n
+      q = q + 1
+      x(:,q) = [u(i), (1 - u(i))*v(j)]
+      w(q) = wu(i)*wv(j)
+    end do
+  end do
+
+end subroutine collapsed_triangle
+
+!***********************************************************************
+
+pure subroutine tetrahedron_rule(p, x, w)
+!! Rule of total degree `p` on the unit tetrahedron
+
+  integer, intent(in) :: p                           !! Degree of exactness
+  real(rk), allocatable, intent(out) :: x(:,:)       !! Abscissae, shape `[3, n]`
+  real(rk), allocatable, intent(out) :: w(:)         !! Weights
+
+  integer :: i
+
+  select case (p)
+
+  ! 4 points, interior (Zienkiewicz et al. 2005)
+  case (2)
+    block
+      real(rk), parameter :: a = (5 + 3*sqrt(5.0_rk))/20
+      real(rk), parameter :: b = (5 -   sqrt(5.0_rk))/20
+      allocate(x(3,4), w(4))
+      x = b
+      do i = 1, 3
+        x(i,i) = a
+      end do
+      w = 1.0_rk/24
+    end block
+
+  case default
+    call collapsed_tetrahedron(p, x, w)
+
+  end select
+
+end subroutine tetrahedron_rule
+
+!***********************************************************************
+
+pure subroutine collapsed_tetrahedron(p, x, w)
+!! Collapsed Gauss–Jacobi rule of total degree `p` on the unit tetrahedron.
+!!
+!! Maps \((u, v, t) \in [0,1]^3\) to
+!! \((x, y, z) = (u, (1-u)v, (1-u)(1-v)t)\), Jacobian \((1-u)^2(1-v)\),
+!! absorbed by Gauss–Jacobi \(\alpha = 2\) in \(u\) and \(\alpha = 1\) in
+!! \(v\) (Stroud 1971; Karniadakis & Sherwin 2005).
+
+  integer, intent(in) :: p                           !! Degree of exactness
+  real(rk), allocatable, intent(out) :: x(:,:)       !! Abscissae, shape `[3, n**3]`
+  real(rk), allocatable, intent(out) :: w(:)         !! Weights
+
+  real(rk), dimension(p/2+1) :: u, wu, v, wv, t, wt
+  integer :: i, j, k, n, q
+
+  n = p/2 + 1
+  call gauss_jacobi(n, 2, u, wu)
+  call gauss_jacobi(n, 1, v, wv)
+  call gauss_jacobi(n, 0, t, wt)
+  u = (1 + u)/2;  wu = wu/8
+  v = (1 + v)/2;  wv = wv/4
+  t = (1 + t)/2;  wt = wt/2
+
+  allocate(x(3,n**3), w(n**3))
+  q = 0
+  do i = 1, n
+    do j = 1, n
+      do k = 1, n
+        q = q + 1
+        x(:,q) = [u(i), (1 - u(i))*v(j), (1 - u(i))*(1 - v(j))*t(k)]
+        w(q) = wu(i)*wv(j)*wt(k)
+      end do
+    end do
+  end do
+
+end subroutine collapsed_tetrahedron
+
+!***********************************************************************
+
+pure subroutine wedge_rule(ptri, plin, x, w)
+!! Product of a triangle rule and a Gauss–Legendre rule, triangle fastest
+
+  integer, intent(in) :: ptri                        !! Total degree in the triangle
+  integer, intent(in) :: plin                        !! Degree along the axis
+  real(rk), allocatable, intent(out) :: x(:,:)       !! Abscissae, shape `[3, n]`
+  real(rk), allocatable, intent(out) :: w(:)         !! Weights
+
+  real(rk), allocatable :: xt(:,:), wt(:)
+  real(rk) :: z(plin/2+1), wz(plin/2+1)
+  integer :: k, nt
+
+  call triangle_rule(ptri, xt, wt)
+  call gauss_jacobi(size(z), 0, z, wz)
+
+  nt = size(wt)
+  allocate(x(3, nt*size(z)), w(nt*size(z)))
+  do k = 1, size(z)
+    x(1:2, (k-1)*nt+1:k*nt) = xt
+    x(3,   (k-1)*nt+1:k*nt) = z(k)
+    w(     (k-1)*nt+1:k*nt) = wt*wz(k)
+  end do
+
+end subroutine wedge_rule
+
+!***********************************************************************
+
+pure subroutine gauss_jacobi(n, alpha, x, w)
+!! `n`-point Gauss–Jacobi rule on \([-1,1]\) for the weight
+!! \((1-x)^\alpha\), exact to degree \(2n-1\). `alpha = 0` is Gauss–Legendre.
+!!
+!! Roots of \(P_n^{(\alpha,0)}\) by Newton iteration with deflation;
+!! weights \(w_i = 2^{\alpha+1} / \big((1-x_i^2)\,P_n'(x_i)^2\big)\)
+!! (Abramowitz & Stegun 1964, 25.4.33 with \(\beta = 0\)).
+
+  integer, intent(in) :: n                 !! Number of points, \(\ge 1\)
+  integer, intent(in) :: alpha             !! Jacobi exponent, \(\ge 0\)
+  real(rk), intent(out) :: x(n)            !! Abscissae
+  real(rk), intent(out) :: w(n)            !! Weights
+
+  real(rk) :: z, dz, pn, dpn
+  integer :: i, it
+
+  do i = 1, n
+    z = cos(pi*(i - 0.25_rk)/(n + 0.5_rk))   ! Legendre root estimate
+    do it = 1, 100
+      call jacobi(n, alpha, z, pn, dpn)
+      dz = pn/dpn
+      dz = dz/(1 - dz*sum(1/(z - x(1:i-1))))   ! Deflate roots already found
+      z = z - dz
+      if (abs(dz) <= 2*epsilon(z)) exit
+    end do
+    call jacobi(n, alpha, z, pn, dpn)
+    x(i) = z
+    w(i) = 2.0_rk**(alpha+1)/((1 - z**2)*dpn**2)
+  end do
+
+end subroutine gauss_jacobi
+
+!***********************************************************************
+
+pure subroutine jacobi(n, alpha, x, pn, dpn)
+!! Jacobi polynomial \(P_n^{(\alpha,0)}(x)\), \(n \ge 1\), and its
+!! derivative, by three-term recurrence (Abramowitz & Stegun 1964, 22.7.1
+!! and 22.8.1)
+
+  integer, intent(in) :: n                 !! Degree
+  integer, intent(in) :: alpha             !! Jacobi exponent
+  real(rk), intent(in) :: x                !! Argument, \(|x| < 1\)
+  real(rk), intent(out) :: pn              !! \(P_n(x)\)
+  real(rk), intent(out) :: dpn             !! \(P_n'(x)\)
+
+  real(rk) :: a, c, p0, p1
+  integer :: k
+
+  a = alpha
+  p0 = 1
+  p1 = ((a + 2)*x + a)/2
+  do k = 2, n
+    c = 2*k + a
+    pn = ((c - 1)*(c*(c - 2)*x + a*a)*p1 - 2*(k + a - 1)*(k - 1)*c*p0) &
+       / (2*k*(k + a)*(c - 2))
+    p0 = p1
+    p1 = pn
+  end do
+  pn = p1
+  c = 2*n + a
+  dpn = (n*(a - c*x)*pn + 2*(n + a)*n*p0)/(c*(1 - x**2))
+
+end subroutine jacobi
 
 !***********************************************************************
 
