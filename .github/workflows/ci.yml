@@ -18,12 +18,12 @@ jobs:
           - { os: macos-15,      compiler: gcc,        version: 14 }
           - { os: windows-2025,  compiler: gcc,        version: 14 }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: fortran-lang/setup-fortran@v1   # sets FPM_FC
         with:
           compiler: ${{ matrix.compiler }}
           version: ${{ matrix.version }}
-      - uses: fortran-lang/setup-fpm@v7
+      - uses: fortran-lang/setup-fpm@v10
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           fpm-version: latest
@@ -34,8 +34,8 @@ jobs:
   docs:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.x'
       - run: pip install ford

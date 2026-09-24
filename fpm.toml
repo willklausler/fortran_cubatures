@@ -20,7 +20,8 @@ debug.ifx.linux.flags = "-fsanitize=address,undefined"
 debug.nvfortran.flags = "-Minform=inform -Mbounds -Mchkptr -Mchkstk -Mstandard -Ktrap=fp -traceback"
 
 release.flags = "-O3"
-release.gfortran.flags = "-fbacktrace -march=native -funroll-loops -flto"
+release.gfortran.flags = "-fbacktrace -march=native -funroll-loops"
+release.gfortran.linux.flags = "-flto"   # MinGW ar drops LTO objects from the archive
 release.ifx.flags = "-xHost -unroll"
 
 release.nvfortran.flags = "-Mrecursive -fast"
