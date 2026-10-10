@@ -10,6 +10,7 @@ program test_cubatures
 !! Also checks point counts of the tabulated rules, point ordering, the
 !! constructor and `set` interfaces, reuse, `destroy`, and output.
 
+  use, intrinsic :: iso_fortran_env, only: rk => real64
   use cubatures
 
   implicit none

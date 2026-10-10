@@ -1,3 +1,4 @@
+! SPDX-License-Identifier: MIT
 module cubatures
 !! Numerical integration rules (cubatures) on the reference elements of
 !! the finite element method.
@@ -40,8 +41,16 @@ module cubatures
 !!
 !! ## Point ordering
 !!
-!! Tensor-product rules vary the first coordinate fastest. Wedge rules
+!! Tensor-product rules vary the first coordinate fastest, and the Gauss
+!! points of each direction run from +1 down to -1. Wedge rules
 !! vary the triangle point fastest and the axial point slowest.
+!!
+!! ## Conventions
+!!
+!! Abscissae and weights are `real64`; kinds are not exported, so take
+!! `real64` from `iso_fortran_env`. Invalid arguments to the constructor or
+!! `set` stop with `error stop` and a message that starts with
+!! `cubature%set:`.
 !!
 !! ## References
 !!
@@ -61,14 +70,15 @@ module cubatures
 !!    Element Method: Its Basis and Fundamentals*, 6th ed.
 !!    Butterworth-Heinemann.
 
-  use iso_fortran_env, only: rk => real64, output_unit
+  use, intrinsic :: iso_fortran_env, only: rk => real64, output_unit
 
   implicit none
 
   private
 
-  public :: rk
+  ! Type and constructor
   public :: cubature
+  ! Element types
   public :: CUB_LIN, CUB_TRI, CUB_QUA, CUB_TET, CUB_HEX, CUB_WED
 
   integer, parameter :: CUB_LIN = 1 !! Line element
@@ -106,10 +116,10 @@ module cubatures
     generic :: set => set_iso, set_aniso      !! Build the rule in place
     procedure, private :: set_iso
     procedure, private :: set_aniso
-    procedure :: is_valid
-    procedure :: summary
-    procedure :: show
-    procedure :: destroy
+    procedure :: is_valid                     !! True if the rule is set and consistent
+    procedure :: summary                      !! Write element, dimension, degrees, points
+    procedure :: show                         !! Write the summary, points and weights
+    procedure :: destroy                      !! Deallocate and reset
 
   end type cubature
 
@@ -121,7 +131,9 @@ module cubatures
 
 contains
 
-!***********************************************************************
+!-----------------------------------------------------------------------
+! Constructors and set
+!-----------------------------------------------------------------------
 
 pure function new_iso(elm, degree) result(self)
 !! Construct a rule of degree `degree` in every direction
@@ -134,8 +146,6 @@ pure function new_iso(elm, degree) result(self)
 
 end function new_iso
 
-!***********************************************************************
-
 pure function new_aniso(elm, degree) result(self)
 !! Construct a rule with per-direction degrees
 
@@ -147,8 +157,6 @@ pure function new_aniso(elm, degree) result(self)
 
 end function new_aniso
 
-!***********************************************************************
-
 pure subroutine set_iso(self, elm, degree)
 !! Build a rule of degree `degree` in every direction
 
@@ -159,8 +167,6 @@ pure subroutine set_iso(self, elm, degree)
   call self%set(elm, [degree])
 
 end subroutine set_iso
-
-!***********************************************************************
 
 pure subroutine set_aniso(self, elm, degree)
 !! Build a rule with per-direction degrees.
@@ -209,22 +215,22 @@ pure subroutine set_aniso(self, elm, degree)
 
 end subroutine set_aniso
 
-!***********************************************************************
+!-----------------------------------------------------------------------
+! Inspection and output
+!-----------------------------------------------------------------------
 
-pure logical function is_valid(self)
+pure logical function is_valid(self) result(valid)
 !! True if the rule is set and its arrays are consistent
 
   class(cubature), intent(in) :: self
 
-  is_valid = allocated(self%abscissae) .and. allocated(self%weights)
-  if (.not. is_valid) return
-  is_valid = self%npoints > 0 &
+  valid = allocated(self%abscissae) .and. allocated(self%weights)
+  if (.not. valid) return
+  valid = self%npoints > 0 &
        .and. size(self%weights) == self%npoints &
        .and. all(shape(self%abscissae) == [self%dim, self%npoints])
 
 end function is_valid
-
-!***********************************************************************
 
 subroutine summary(self, unit)
 !! Write element type, dimension, degrees and number of points
@@ -238,18 +244,16 @@ subroutine summary(self, unit)
   if (present(unit)) u = unit
 
   if (self%elm == 0) then
-    write(u,"(A)") "cubature: not set"
+    write(u, "(a)") "cubature: not set"
     return
   end if
 
-  write(u,"(A,A)")              "Element:   ", names(self%elm)
-  write(u,"(A,I0)")             "Dimension: ", self%dim
-  write(u,"(A,*(I0,:,', '))")   "Degree:    ", self%degree(1:ndegrees(self%elm))
-  write(u,"(A,I0)")             "Points:    ", self%npoints
+  write(u, "(a,a)")              "Element:   ", names(self%elm)
+  write(u, "(a,i0)")             "Dimension: ", self%dim
+  write(u, "(a,*(i0,:,', '))")   "Degree:    ", self%degree(1:ndegrees(self%elm))
+  write(u, "(a,i0)")             "Points:    ", self%npoints
 
 end subroutine summary
-
-!***********************************************************************
 
 subroutine show(self, unit)
 !! Write the summary, every abscissa and weight, and the weight sum
@@ -266,13 +270,11 @@ subroutine show(self, unit)
   if (.not. self%is_valid()) return
 
   do q = 1, self%npoints
-    write(u,"(I4,')',*(1X,ES23.15E3))") q, self%abscissae(:,q), self%weights(q)
+    write(u, "(i4,')',*(1x,es23.15e3))") q, self%abscissae(:,q), self%weights(q)
   end do
-  write(u,"(A,ES23.15E3)") "Sum of weights: ", sum(self%weights)
+  write(u, "(a,es23.15e3)") "Sum of weights: ", sum(self%weights)
 
 end subroutine show
-
-!***********************************************************************
 
 pure subroutine destroy(self)
 !! Deallocate and reset to the unset state
@@ -288,7 +290,9 @@ pure subroutine destroy(self)
 
 end subroutine destroy
 
-!***********************************************************************
+!-----------------------------------------------------------------------
+! Rules by element
+!-----------------------------------------------------------------------
 
 pure subroutine tensor_rule(p, x, w)
 !! Tensor product of Gauss–Legendre rules, first direction fastest
@@ -320,8 +324,6 @@ pure subroutine tensor_rule(p, x, w)
   end do
 
 end subroutine tensor_rule
-
-!***********************************************************************
 
 pure subroutine triangle_rule(p, x, w)
 !! Rule of total degree `p` on the unit triangle
@@ -369,8 +371,6 @@ pure subroutine triangle_rule(p, x, w)
 
 end subroutine triangle_rule
 
-!***********************************************************************
-
 pure function orbit3(a) result(x)
 !! The 3 triangle points with barycentric coordinates \((a, a, 1-2a)\) permuted
 
@@ -380,8 +380,6 @@ pure function orbit3(a) result(x)
   x = reshape([a, a, 1-2*a, a, a, 1-2*a], [2, 3])
 
 end function orbit3
-
-!***********************************************************************
 
 pure subroutine collapsed_triangle(p, x, w)
 !! Collapsed Gauss–Jacobi rule of total degree `p` on the unit triangle.
@@ -415,8 +413,6 @@ pure subroutine collapsed_triangle(p, x, w)
 
 end subroutine collapsed_triangle
 
-!***********************************************************************
-
 pure subroutine tetrahedron_rule(p, x, w)
 !! Rule of total degree `p` on the unit tetrahedron
 
@@ -447,8 +443,6 @@ pure subroutine tetrahedron_rule(p, x, w)
   end select
 
 end subroutine tetrahedron_rule
-
-!***********************************************************************
 
 pure subroutine collapsed_tetrahedron(p, x, w)
 !! Collapsed Gauss–Jacobi rule of total degree `p` on the unit tetrahedron.
@@ -487,8 +481,6 @@ pure subroutine collapsed_tetrahedron(p, x, w)
 
 end subroutine collapsed_tetrahedron
 
-!***********************************************************************
-
 pure subroutine wedge_rule(ptri, plin, x, w)
 !! Product of a triangle rule and a Gauss–Legendre rule, triangle fastest
 
@@ -514,7 +506,9 @@ pure subroutine wedge_rule(ptri, plin, x, w)
 
 end subroutine wedge_rule
 
-!***********************************************************************
+!-----------------------------------------------------------------------
+! Gauss-Jacobi rules on [-1, 1]
+!-----------------------------------------------------------------------
 
 pure subroutine gauss_jacobi(n, alpha, x, w)
 !! `n`-point Gauss–Jacobi rule on \([-1,1]\) for the weight
@@ -548,8 +542,6 @@ pure subroutine gauss_jacobi(n, alpha, x, w)
 
 end subroutine gauss_jacobi
 
-!***********************************************************************
-
 pure subroutine jacobi(n, alpha, x, pn, dpn)
 !! Jacobi polynomial \(P_n^{(\alpha,0)}(x)\), \(n \ge 1\), and its
 !! derivative, by three-term recurrence (Abramowitz & Stegun 1964, 22.7.1
@@ -579,7 +571,5 @@ pure subroutine jacobi(n, alpha, x, pn, dpn)
   dpn = (n*(a - c*x)*pn + 2*(n + a)*n*p0)/(c*(1 - x**2))
 
 end subroutine jacobi
-
-!***********************************************************************
 
 end module cubatures
