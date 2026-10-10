@@ -1,0 +1,93 @@
+.TH CUBATURES 3 "2026-10-10" "fortran_cubatures 0.2.0" "Fortran Library Functions"
+.SH NAME
+cubatures \- Gaussian cubature rules on finite element reference elements
+.SH SYNOPSIS
+.nf
+.B use cubatures
+.B type(cubature) :: q
+.B q = cubature(elm, degree)
+.fi
+.SH DESCRIPTION
+Module
+.B cubatures
+provides the derived type
+.BR cubature ,
+the abscissae and weights of an integration rule on a reference element,
+so that the integral of f is approximated by
+.BR "sum(q%weights * f(q%abscissae))" .
+Abscissae and weights are real64.
+.SS Elements
+.TP
+.B CUB_LIN
+line [\-1, 1], measure 2
+.TP
+.B CUB_TRI
+unit triangle x, y >= 0, x + y <= 1, measure 1/2
+.TP
+.B CUB_QUA
+quadrilateral [\-1, 1]^2, measure 4
+.TP
+.B CUB_TET
+unit tetrahedron, measure 1/6
+.TP
+.B CUB_HEX
+hexahedron [\-1, 1]^3, measure 8
+.TP
+.B CUB_WED
+wedge: unit triangle x [\-1, 1], measure 1
+.SS Constructor
+.TP
+.BR cubature ( elm ", " p )
+Rule of degree of exactness p in every direction.
+.TP
+.BR cubature ( elm ", [" p1 ", " p2 ", ...])"
+One degree per direction: [px, py] for quadrilaterals, [px, py, pz] for
+hexahedra, [ptri, pz] for wedges.
+.PP
+Triangle and tetrahedron rules are exact for total degree p; tensor-product
+rules for degree p_i in each coordinate; wedge rules for total degree ptri in
+(x, y) times degree pz in z. All weights are positive and all points are
+interior. There is no upper limit on the degree.
+.SS Components
+.BR elm ", " dim ", " degree(3) ", " npoints ,
+.BR abscissae(dim,npoints) ", " weights(npoints) .
+.SS Type-bound procedures
+.TP
+.BR "call q%set" ( elm ", " degree )
+Build the rule in place, like the constructor.
+.TP
+.BR q%is_valid ()
+True if the rule is set and consistent.
+.TP
+.BR "call q%summary" "([" unit "]), " "call q%show" "([" unit "])"
+Write the element, dimension, degrees and number of points; show also
+writes every point, weight and the weight sum.
+.TP
+.BR "call q%destroy" ()
+Deallocate and reset.
+.SH NOTES
+An invalid element type, a negative degree or a degree array of the wrong
+size stops the program with
+.B error stop
+and a message that starts with "cubature%set:".
+Errors cannot be caught.
+.PP
+Tensor-product rules vary the first coordinate fastest; Gauss points in each
+direction run from +1 down to \-1. Wedge rules vary the triangle point
+fastest. Simplex abscissae are Cartesian coordinates, equal to the leading
+barycentric coordinates.
+.PP
+Kinds are not exported; use real64 from iso_fortran_env. The module has no
+state.
+.SH EXAMPLE
+.nf
+use cubatures
+type(cubature) :: q
+q = cubature(CUB_TET, 4)
+print *, q%npoints, sum(q%weights)   ! 27  0.16666666666666669
+.fi
+.SH SEE ALSO
+The complete reference is llms.txt in the source distribution and
+https://willklausler.github.io/fortran_cubatures/
+.SH AUTHOR
+Will Klausler

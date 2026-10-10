@@ -1,0 +1,206 @@
+# fortran_cubatures
+
+> Fortran module `cubatures`: the derived type `cubature`, which holds the abscissae and weights of a Gaussian integration rule on one of the six reference elements of the finite element method (line, triangle, quadrilateral, tetrahedron, hexahedron, wedge). Rules are chosen by degree of exactness, with no upper limit, and with separate degrees per direction on tensor-product elements. Fortran 2008, fpm or make. This file is the complete API reference for tools and coding agents; it is checked against the source in CI.
+
+Use: `use cubatures` (everything) or `use cubatures, only: cubature, CUB_TRI, ...`.
+fpm dependency: `fortran_cubatures = { git = "https://github.com/willklausler/fortran_cubatures" }`
+Kinds are not exported: abscissae and weights are `real64` from `iso_fortran_env`.
+
+## Conventions (read first)
+
+- A rule approximates the integral over the reference element by `sum(q%weights * f(q%abscissae))`, where column `k` of `q%abscissae` is point `k`. The integral over a physical element needs the Jacobian determinant of the map at each point.
+- Reference elements and their measures (the sum of the weights):
+
+  | Constant | Element | Reference domain | Measure |
+  |---|---|---|---|
+  | `CUB_LIN` | line | [-1, 1] | 2 |
+  | `CUB_TRI` | triangle | x, y >= 0, x + y <= 1 | 1/2 |
+  | `CUB_QUA` | quadrilateral | [-1, 1]^2 | 4 |
+  | `CUB_TET` | tetrahedron | x, y, z >= 0, x + y + z <= 1 | 1/6 |
+  | `CUB_HEX` | hexahedron | [-1, 1]^3 | 8 |
+  | `CUB_WED` | wedge (prism) | triangle x [-1, 1] | 1 |
+
+- Degree of exactness p: the rule integrates exactly
+  - triangle, tetrahedron: every polynomial of total degree <= p;
+  - line, quadrilateral, hexahedron: every polynomial of degree <= p_i in each coordinate i (this includes total degree <= min p_i);
+  - wedge: total degree <= p_1 in (x, y) times degree <= p_2 in z.
+- `degree` is one integer (the same in every direction) or an array of `ndeg` integers: 1 for line, triangle and tetrahedron, 2 for quadrilateral ([px, py]) and wedge ([ptri, pz]), 3 for hexahedron ([px, py, pz]).
+- Every rule has positive weights and abscissae strictly inside the element.
+- Triangle and tetrahedron abscissae are Cartesian coordinates on the unit simplex, which equal the leading barycentric coordinates; the last barycentric coordinate is 1 - sum(xi).
+- Point order: tensor-product rules vary the first coordinate fastest, and the Gauss points of each direction run from +1 down to -1. Wedge rules vary the triangle point fastest and the axial point slowest.
+- Error policy: an invalid element type, a negative degree or a `degree` array of the wrong size stops with `error stop` and a message that starts with `cubature%set:`. Errors cannot be caught. There is no other failure mode.
+- No module state; every procedure except `summary` and `show` is pure.
+
+## Types and constructors
+
+| Call | Result |
+|---|---|
+| `type(cubature)` | an unset rule: `elm = 0`, arrays not allocated, `is_valid()` false |
+| `cubature(elm, p)` | rule of degree `p` (integer) in every direction on element `elm` |
+| `cubature(elm, [p1, p2, ...])` | rule with one degree per direction; size 1 or `ndeg` (see Conventions) |
+| `CUB_LIN`, `CUB_TRI`, `CUB_QUA`, `CUB_TET`, `CUB_HEX`, `CUB_WED` | integer element constants 1 to 6, usable as array indices |
+
+Assignment between cubatures is intrinsic (deep copy).
+
+## Components
+
+All public, read them directly; set them only through the constructor or `set`.
+
+| Component | Meaning |
+|---|---|
+| `q%elm` | element type, a `CUB_*` constant; 0 if unset |
+| `q%dim` | spatial dimension, 1 to 3 |
+| `q%degree(3)` | degrees of exactness, padded with 0 (`[4, 2, 0]` for a wedge) |
+| `q%npoints` | number of points |
+| `q%abscissae(dim, npoints)` | `real64` point coordinates in the reference element |
+| `q%weights(npoints)` | `real64` weights, all > 0 |
+
+## Type-bound procedures
+
+| Call | Result |
+|---|---|
+| `call q%set(elm, p)` | builds the rule in place, like the constructor; reuses `q` for any element |
+| `q%is_valid()` | logical: the rule is set and its array shapes match `dim` and `npoints` |
+| `call q%summary([unit])` | writes element, dimension, degrees and number of points (default `output_unit`) |
+| `call q%show([unit])` | writes the summary, one line per point with its abscissae and weight, and the weight sum |
+| `call q%destroy()` | deallocates and resets to the unset state |
+
+## Rules and point counts
+
+n(p) = p/2 + 1 (integer division) is the number of Gauss points that integrate degree p in one direction.
+
+| Element | Rule | Points |
+|---|---|---|
+| line, quadrilateral, hexahedron | tensor-product Gauss-Legendre | n(px)·n(py)·n(pz) |
+| wedge | triangle rule x Gauss-Legendre | T(ptri)·n(pz) |
+| triangle | see below | T(p) |
+| tetrahedron | see below | see below |
+
+| p | Triangle points T(p) | Triangle rule | Tetrahedron points | Tetrahedron rule |
+|---|---|---|---|---|
+| 0, 1 | 1 | centroid | 1 | centroid |
+| 2 | 3 | symmetric, interior (Zienkiewicz et al.) | 4 | symmetric (Zienkiewicz et al.) |
+| 3 | 4 | collapsed Gauss-Jacobi | 8 | collapsed Gauss-Jacobi |
+| 4 | 6 | symmetric (Dunavant) | 27 | collapsed Gauss-Jacobi |
+| 5 | 7 | symmetric (Radon) | 27 | collapsed Gauss-Jacobi |
+| >= 6 | n(p)^2 | collapsed Gauss-Jacobi | n(p)^3 | collapsed Gauss-Jacobi |
+
+Collapsed (conical product) rules map the unit square or cube onto the simplex and absorb the Jacobian of that map in Gauss-Jacobi weights. Gauss points are computed at run time by Newton iteration on Legendre and Jacobi polynomials, so any degree works; cost grows like the number of points.
+
+Choosing a degree: for shape functions of order k on an element with an affine map, the mass matrix needs 2k and the stiffness matrix 2k - 2. A bilinear quadrilateral or trilinear hexahedron mass matrix needs degree 3 per direction because det(J) is not constant. Curved elements and non-polynomial integrands need more.
+
+## Compiler notes
+
+Tested in CI with gfortran 13 and 14 (Linux, macOS, Windows), ifx 2026 (Linux, Windows), LLVM flang 21 and nvfortran 26 (Linux). No compiler-specific code and no known compiler limitations.
+
+## Differs from
+
+- `stdlib_quadrature` (fortran-lang/stdlib), QUADPACK and GaussJacobiQuad: one-dimensional rules only; here a rule is a single object for any FE element.
+- quadrature-fortran (jacobwilliams): adaptive integration of a user function over boxes; it returns an integral, not points and weights, and has no simplex elements.
+- triasymq (Gimbutas and Xiao): tabulated, more efficient symmetric rules of high degree on triangles, squares, cubes and tetrahedra, in FORTRAN 77; no lines or wedges. For high-degree simplex rules it uses fewer points than the collapsed rules here.
+- FE codes such as deal.II or FEniCS use the same reference elements but other coordinates for some of them (for example [0, 1] instead of [-1, 1]); map the abscissae if you mix them.
+
+## Module layout
+
+One module, `cubatures`, in `src/cubatures.f90`. The specific procedures behind the constructor and `set` (`new_iso`, `new_aniso`, `set_iso`, `set_aniso`) are private; call them through the generic names.
+
+## Examples
+
+These are the programs in `example/`, compiled in CI.
+
+```fortran
+program demo_rule
+  !! Build rules, read their points and weights, and keep one rule per element type
+  use, intrinsic :: iso_fortran_env, only: dp => real64
+  use cubatures
+  implicit none
+  integer, parameter :: mesh(*) = [CUB_TET, CUB_HEX, CUB_WED, CUB_TET]
+  type(cubature) :: q, rules(6)
+  real(dp) :: measure
+  integer :: e
+
+  q = cubature(CUB_TRI, 2)                   ! exact for total degree <= 2
+  call q%show()                              ! 3 points and weights, sum 0.5
+  print *, q%dim, q%npoints, q%is_valid()    ! 2 3 T
+
+  call q%set(CUB_HEX, [1, 3, 5])             ! reuse q; one degree per direction
+  print *, q%degree, q%npoints               ! 1 3 5 6: 1 x 2 x 3 points
+  print *, q%abscissae(:, 2)                 ! 0 -0.577 0.775: first coordinate fastest
+
+  ! One rule per element type, indexed by the CUB_* constants
+  rules(CUB_TET) = cubature(CUB_TET, 4)      ! 27 points
+  rules(CUB_HEX) = cubature(CUB_HEX, 4)      ! 27 points
+  rules(CUB_WED) = cubature(CUB_WED, [4, 2]) ! 6 x 2 = 12 points
+  do e = 1, size(mesh)
+    associate (r => rules(mesh(e)))
+      measure = sum(r%weights)               ! 1/6, 8, 1, 1/6
+      print '(a, i0, a, i3, a, f9.6)', 'element ', e, ':', r%npoints, ' points, measure', measure
+    end associate
+  end do
+end program demo_rule
+```
+
+```fortran
+program demo_triangle
+  !! Integrate over a physical triangle through the affine map from the reference triangle
+  use, intrinsic :: iso_fortran_env, only: dp => real64
+  use cubatures
+  implicit none
+  real(dp), parameter :: xv(2,3) = reshape([1._dp, 0._dp, &
+                                            4._dp, 1._dp, &
+                                            2._dp, 3._dp], [2, 3])  ! vertices
+  type(cubature) :: q
+  real(dp) :: jac(2,2), detj, x(2), total, exact
+  integer :: k
+
+  q = cubature(CUB_TRI, 2)                   ! x*y has degree 2 after an affine map
+  jac(:,1) = xv(:,2) - xv(:,1)               ! x = xv(:,1) + jac*xi
+  jac(:,2) = xv(:,3) - xv(:,1)               ! det(jac) = 8 = twice the area
+  detj = jac(1,1)*jac(2,2) - jac(1,2)*jac(2,1)
+
+  total = 0
+  do k = 1, q%npoints
+    x = xv(:,1) + matmul(jac, q%abscissae(:,k))
+    total = total + x(1)*x(2)*detj*q%weights(k)
+  end do
+
+  ! Closed form: area/12*(sum(x_k*y_k) + sum(x_k)*sum(y_k))
+  exact = detj/24*(sum(xv(1,:)*xv(2,:)) + sum(xv(1,:))*sum(xv(2,:)))
+  print *, total, exact                      ! 12.666666666666664 12.666666666666666
+end program demo_triangle
+```
+
+```fortran
+program demo_mass_matrix
+  !! Consistent mass matrix of a distorted bilinear quadrilateral (isoparametric map)
+  use, intrinsic :: iso_fortran_env, only: dp => real64
+  use cubatures
+  implicit none
+  real(dp), parameter :: xn(2,4) = reshape([0._dp, 0._dp, &
+                                            2._dp, 0._dp, &
+                                            2.5_dp, 1.5_dp, &
+                                            0._dp, 1._dp], [2, 4])  ! nodes
+  real(dp), parameter :: sn(2,4) = reshape([-1, -1, 1, -1, 1, 1, -1, 1], [2, 4])  ! reference nodes
+  type(cubature) :: q
+  real(dp) :: n(4), dn(4,2), jac(2,2), detj, m(4,4)
+  integer :: k, i
+
+  q = cubature(CUB_QUA, 3)                   ! N_i*N_j*det(J) has degree 3 per direction
+  m = 0
+  do k = 1, q%npoints                        ! 2 x 2 Gauss points
+    associate (xi => q%abscissae(:,k))
+      n = (1 + sn(1,:)*xi(1))*(1 + sn(2,:)*xi(2))/4
+      dn(:,1) = sn(1,:)*(1 + sn(2,:)*xi(2))/4
+      dn(:,2) = sn(2,:)*(1 + sn(1,:)*xi(1))/4
+    end associate
+    jac = matmul(xn, dn)
+    detj = jac(1,1)*jac(2,2) - jac(1,2)*jac(2,1)
+    m = m + spread(n, 2, 4)*spread(n, 1, 4)*detj*q%weights(k)
+  end do
+
+  do i = 1, 4
+    print '(4f10.6)', m(i,:)                 ! symmetric, positive definite
+  end do
+  print *, sum(m)                            ! 2.75: the area of the element
+end program demo_mass_matrix
+```
