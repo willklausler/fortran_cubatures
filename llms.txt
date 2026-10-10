@@ -183,7 +183,7 @@ program demo_mass_matrix
   real(dp), parameter :: sn(2,4) = reshape([-1, -1, 1, -1, 1, 1, -1, 1], [2, 4])  ! reference nodes
   type(cubature) :: q
   real(dp) :: n(4), dn(4,2), jac(2,2), detj, m(4,4)
-  integer :: k, i
+  integer :: k
 
   q = cubature(CUB_QUA, 3)                   ! N_i*N_j*det(J) has degree 3 per direction
   m = 0
@@ -198,9 +198,7 @@ program demo_mass_matrix
     m = m + spread(n, 2, 4)*spread(n, 1, 4)*detj*q%weights(k)
   end do
 
-  do i = 1, 4
-    print '(4f10.6)', m(i,:)                 ! symmetric, positive definite
-  end do
+  print '(4f10.6)', m                        ! one column per line; M is symmetric
   print *, sum(m)                            ! 2.75: the area of the element
 end program demo_mass_matrix
 ```
