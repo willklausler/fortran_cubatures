@@ -1,4 +1,4 @@
-program cubatures_test
+program test_cubatures
 !! Unit tests for [[cubatures]].
 !!
 !! For every element type and a sweep of degrees, checks that each rule
@@ -316,4 +316,4 @@ end subroutine test_output
 
 !***********************************************************************
 
-end program cubatures_test
+end program test_cubatures
