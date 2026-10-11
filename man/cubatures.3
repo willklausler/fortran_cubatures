@@ -71,6 +71,8 @@ size stops the program with
 .B error stop
 and a message that starts with "cubature%set:".
 Errors cannot be caught.
+The only other stop, a Gauss\-Jacobi iteration that does not converge,
+guards against an internal fault.
 .PP
 Tensor-product rules vary the first coordinate fastest; Gauss points in each
 direction run from +1 down to \-1. Wedge rules vary the triangle point

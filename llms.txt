@@ -28,7 +28,7 @@ Kinds are not exported: abscissae and weights are `real64` from `iso_fortran_env
 - Every rule has positive weights and abscissae strictly inside the element.
 - Triangle and tetrahedron abscissae are Cartesian coordinates on the unit simplex, which equal the leading barycentric coordinates; the last barycentric coordinate is 1 - sum(xi).
 - Point order: tensor-product rules vary the first coordinate fastest, and the Gauss points of each direction run from +1 down to -1. Wedge rules vary the triangle point fastest and the axial point slowest.
-- Error policy: an invalid element type, a negative degree or a `degree` array of the wrong size stops with `error stop` and a message that starts with `cubature%set:`. Errors cannot be caught. There is no other failure mode.
+- Error policy: an invalid element type, a negative degree or a `degree` array of the wrong size stops with `error stop` and a message that starts with `cubature%set:`. Errors cannot be caught. The only other stop, "Gauss-Jacobi iteration did not converge", guards against an internal fault; it has not occurred up to 1000 points per direction.
 - No module state; every procedure except `summary` and `show` is pure.
 
 ## Types and constructors

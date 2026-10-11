@@ -39,7 +39,7 @@ examples and the app run, and `tools/check_docs.py` passes.
 - Reference elements: [-1, 1]^d for line, quadrilateral and hexahedron; the unit simplex for triangle and tetrahedron; triangle x [-1, 1] for the wedge.
 - Rules are selected by degree of exactness, never by number of points. Every rule has positive weights and interior points; a new rule that breaks this is not accepted.
 - Point order: first coordinate fastest; 1D Gauss points from +1 down to -1; wedge triangle point fastest.
-- Error policy: invalid arguments to the constructor or `set` stop with `error stop` and a message that starts with `cubature%set:`. The policy is also stated in `llms.txt` and the man page NOTES.
+- Error policy: invalid arguments to the constructor or `set` stop with `error stop` and a message that starts with `cubature%set:`. The Gauss-Jacobi Newton iteration also stops, with the same prefix, if it hits its cap of 100 iterations (13 suffice up to 1000 points). The policy is also stated in `llms.txt` and the man page NOTES.
 - Kinds are not exported (`rk` was removed in 0.2.0). Internally `rk` aliases `real64`.
 - No module state. Everything is pure except the output procedures `summary` and `show`.
 

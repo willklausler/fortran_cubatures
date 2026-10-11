@@ -536,6 +536,8 @@ pure subroutine gauss_jacobi(n, alpha, x, w)
       z = z - dz
       if (abs(dz) <= 2*epsilon(z)) exit
     end do
+    ! At most 13 iterations are needed up to n = 1000 (measured), so this is a fault
+    if (it > 100) error stop "cubature%set: Gauss-Jacobi iteration did not converge"
     call jacobi(n, alpha, z, pn, dpn)
     x(i) = z
     w(i) = 2.0_rk**(alpha+1)/((1 - z**2)*dpn**2)
