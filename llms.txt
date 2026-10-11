@@ -1,9 +1,9 @@
 # fortran_cubatures
 
-> Fortran module `cubatures`: the derived type `cubature`, which holds the abscissae and weights of a Gaussian integration rule on one of the six reference elements of the finite element method (line, triangle, quadrilateral, tetrahedron, hexahedron, wedge). Rules are chosen by degree of exactness, with no upper limit, and with separate degrees per direction on tensor-product elements. Fortran 2008, fpm or make. This file is the complete API reference for tools and coding agents; it is checked against the source in CI.
+> Fortran module `cubatures`: the derived type `cubature`, which holds the abscissae and weights of a Gaussian integration rule on one of the six reference elements of the finite element method (line, triangle, quadrilateral, tetrahedron, hexahedron, wedge). Rules are chosen by degree of exactness, with no upper limit, and with separate degrees per direction on tensor-product elements. Fortran 2018, fpm or make. This file is the complete API reference for tools and coding agents; it is checked against the source in CI.
 
 Use: `use cubatures` (everything) or `use cubatures, only: cubature, CUB_TRI, ...`.
-fpm dependency: `fortran_cubatures = { git = "https://github.com/willklausler/fortran_cubatures" }`
+fpm dependency: `fortran_cubatures = { git = "https://github.com/willklausler/fortran_cubatures", tag = "v0.2.0" }`
 Kinds are not exported: abscissae and weights are `real64` from `iso_fortran_env`.
 
 ## Conventions (read first)
@@ -91,7 +91,7 @@ Choosing a degree: for shape functions of order k on an element with an affine m
 
 ## Compiler notes
 
-Tested in CI with gfortran 13 and 14 (Linux, macOS, Windows), ifx 2026 (Linux, Windows), LLVM flang 21 and nvfortran 26 (Linux). No compiler-specific code and no known compiler limitations.
+Tested in CI with gfortran 14 (Linux, macOS, Windows), gfortran 13 (Linux), ifx 2026 (Linux, Windows), LLVM flang 21 and nvfortran 26 (Linux). No compiler-specific code and no known compiler limitations.
 
 ## Differs from
 
@@ -99,6 +99,7 @@ Tested in CI with gfortran 13 and 14 (Linux, macOS, Windows), ifx 2026 (Linux, W
 - quadrature-fortran (jacobwilliams): adaptive integration of a user function over boxes; it returns an integral, not points and weights, and has no simplex elements.
 - triasymq (Gimbutas and Xiao): tabulated, more efficient symmetric rules of high degree on triangles, squares, cubes and tetrahedra, in FORTRAN 77; no lines or wedges. For high-degree simplex rules it uses fewer points than the collapsed rules here.
 - FE codes such as deal.II or FEniCS use the same reference elements but other coordinates for some of them (for example [0, 1] instead of [-1, 1]); map the abscissae if you mix them.
+- Tabulated symmetric simplex rules (Dunavant for triangles, Keast for tetrahedra) need fewer points than the n(p)^2 and n(p)^3 of the collapsed rules here, except at the degrees this package tabulates. The collapsed rules exist for every degree and always have positive weights and interior points, which not every tabulated rule has. If the point count of a simplex rule matters, compare with the table in "Rules and point counts".
 
 ## Module layout
 

@@ -2,11 +2,22 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 title: "fortran_cubatures: Gaussian cubature rules for finite elements"
 type: software
+abstract: >-
+  fortran_cubatures is a Fortran module, cubatures, with the derived type
+  cubature: the abscissae and weights of a Gaussian integration rule on one of
+  the six reference elements of the finite element method (line, triangle,
+  quadrilateral, tetrahedron, hexahedron and wedge). Rules are selected by
+  degree of exactness, for any degree, with separate degrees per direction on
+  tensor-product elements. Triangles and tetrahedra use tabulated symmetric
+  rules at low degree and collapsed Gauss-Jacobi rules above. Every rule has
+  positive weights and interior points and is checked by monomial-exactness
+  tests. It is Fortran 2018 and builds with fpm or make.
 authors:
   - family-names: Klausler
     given-names: Will
+    orcid: "https://orcid.org/0009-0000-4313-3696"
 version: 0.2.0
-date-released: 2026-10-10
+date-released: 2026-10-11
 license: MIT
 repository-code: "https://github.com/willklausler/fortran_cubatures"
 url: "https://willklausler.github.io/fortran_cubatures/"

@@ -40,7 +40,7 @@ With [fpm](https://fpm.fortran-lang.org) 0.13 or later, add to your `fpm.toml`:
 
 ```toml
 [dependencies]
-fortran_cubatures = { git = "https://github.com/willklausler/fortran_cubatures" }
+fortran_cubatures = { git = "https://github.com/willklausler/fortran_cubatures", tag = "v0.2.0" }
 ```
 
 With make, which builds `build/make/libfortran_cubatures.a` and the module file:
@@ -63,7 +63,8 @@ CI tests every push on:
 
 | Compiler | Linux | macOS | Windows |
 | --- | --- | --- | --- |
-| gfortran 13, 14 | yes | yes | yes |
+| gfortran 14 | yes | yes | yes |
+| gfortran 13 | yes | | |
 | ifx 2026 | yes | | yes |
 | LLVM flang 21 | yes | | |
 | nvfortran 26 | yes | | |
@@ -88,7 +89,8 @@ rules and no fpm support. This package covers all six FE elements, including
 wedges, through one derived type. It takes any degree of exactness, with
 anisotropic degrees on tensor elements. Every rule has positive weights and
 interior points, is verified by monomial-exactness tests, and is packaged for
-fpm and tested on several compilers.
+fpm and tested with gfortran, ifx, LLVM flang and nvfortran on Linux, macOS
+and Windows.
 
 ## References
 
