@@ -3,6 +3,7 @@
 [![CI](https://github.com/willklausler/fortran_cubatures/actions/workflows/ci.yml/badge.svg)](https://github.com/willklausler/fortran_cubatures/actions/workflows/ci.yml)
 [![Docs](https://github.com/willklausler/fortran_cubatures/actions/workflows/docs.yml/badge.svg)](https://willklausler.github.io/fortran_cubatures/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23300827.svg)](https://doi.org/10.5281/zenodo.23300827)
 
 Gaussian integration rules on the reference elements of the finite element
 method: one derived type, `cubature`, that holds the points and weights of a
@@ -107,7 +108,8 @@ Version 0.2.0. The API may still change before 1.0; changes are recorded in
 [CHANGELOG.md](CHANGELOG.md). Bug reports, questions and pull requests are
 welcome on [GitHub](https://github.com/willklausler/fortran_cubatures/issues);
 see [CONTRIBUTING.md](CONTRIBUTING.md). To cite this package, use
-[CITATION.cff](CITATION.cff).
+[CITATION.cff](CITATION.cff) or the DOI [10.5281/zenodo.23300827](https://doi.org/10.5281/zenodo.23300827),
+which always points to the latest version.
 
 ## License
 
