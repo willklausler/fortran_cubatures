@@ -72,7 +72,7 @@ program test_cubatures
   q = cubature(CUB_QUA, [3, 1])
   call check(q%npoints == 2, 'QUA [3,1] has 2 points')
   call check(q%abscissae(1,1) /= q%abscissae(1,2) .and. q%abscissae(2,1) == q%abscissae(2,2), &
-    'first coordinate varies fastest')
+    & 'first coordinate varies fastest')
 
   q = cubature(CUB_WED, [0, 3])
   call check(q%abscissae(3,1) /= q%abscissae(3,2), 'WED axial coordinate varies slowest')
@@ -88,7 +88,7 @@ program test_cubatures
 
   call q%destroy()
   call check(.not. q%is_valid() .and. q%elm == 0 .and. q%dim == 0 .and. q%npoints == 0, &
-    'destroy resets to the unset state')
+    & 'destroy resets to the unset state')
 
   ! Rules indexed by element type, as in an FE element table
   rules(CUB_LIN) = cubature(CUB_LIN, 2)
@@ -231,7 +231,7 @@ logical function same(q, r) result(res)
   !! True if two rules are identical
   type(cubature), intent(in) :: q, r
   res = q%elm == r%elm .and. q%dim == r%dim .and. all(q%degree == r%degree) &
-    .and. q%npoints == r%npoints
+    & .and. q%npoints == r%npoints
   if (res) res = all(q%abscissae == r%abscissae) .and. all(q%weights == r%weights)
 end function same
 

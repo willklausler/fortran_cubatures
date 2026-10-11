@@ -136,7 +136,7 @@ contains
 !-----------------------------------------------------------------------
 
 pure function new_iso(elm, degree) result(self)
-!! Construct a rule of degree `degree` in every direction
+  !! Construct a rule of degree `degree` in every direction
 
   integer, intent(in) :: elm       !! Element type, `CUB_*`
   integer, intent(in) :: degree    !! Degree of exactness
@@ -147,7 +147,7 @@ pure function new_iso(elm, degree) result(self)
 end function new_iso
 
 pure function new_aniso(elm, degree) result(self)
-!! Construct a rule with per-direction degrees
+  !! Construct a rule with per-direction degrees
 
   integer, intent(in) :: elm         !! Element type, `CUB_*`
   integer, intent(in) :: degree(:)   !! Degrees of exactness, size 1 or number of directions
@@ -158,7 +158,7 @@ pure function new_aniso(elm, degree) result(self)
 end function new_aniso
 
 pure subroutine set_iso(self, elm, degree)
-!! Build a rule of degree `degree` in every direction
+  !! Build a rule of degree `degree` in every direction
 
   class(cubature), intent(inout) :: self
   integer, intent(in) :: elm       !! Element type, `CUB_*`
@@ -169,11 +169,11 @@ pure subroutine set_iso(self, elm, degree)
 end subroutine set_iso
 
 pure subroutine set_aniso(self, elm, degree)
-!! Build a rule with per-direction degrees.
-!!
-!! `degree` has size 1 (same degree in every direction) or `ndegrees(elm)`:
-!! 1 for `CUB_LIN`, `CUB_TRI`, `CUB_TET`; 2 for `CUB_QUA`, `CUB_WED`
-!! (triangle, axial); 3 for `CUB_HEX`. Stops on invalid input.
+  !! Build a rule with per-direction degrees.
+  !!
+  !! `degree` has size 1 (same degree in every direction) or `ndegrees(elm)`:
+  !! 1 for `CUB_LIN`, `CUB_TRI`, `CUB_TET`; 2 for `CUB_QUA`, `CUB_WED`
+  !! (triangle, axial); 3 for `CUB_HEX`. Stops on invalid input.
 
   class(cubature), intent(inout) :: self
   integer, intent(in) :: elm         !! Element type, `CUB_*`
@@ -220,21 +220,22 @@ end subroutine set_aniso
 ! Inspection and output
 !-----------------------------------------------------------------------
 
-pure logical function is_valid(self) result(valid)
-!! True if the rule is set and its arrays are consistent
+pure function is_valid(self) result(valid)
+  !! True if the rule is set and its arrays are consistent
 
   class(cubature), intent(in) :: self
+  logical :: valid
 
   valid = allocated(self%abscissae) .and. allocated(self%weights)
   if (.not. valid) return
   valid = self%npoints > 0 &
-       .and. size(self%weights) == self%npoints &
-       .and. all(shape(self%abscissae) == [self%dim, self%npoints])
+    & .and. size(self%weights) == self%npoints &
+    & .and. all(shape(self%abscissae) == [self%dim, self%npoints])
 
 end function is_valid
 
 subroutine summary(self, unit)
-!! Write element type, dimension, degrees and number of points
+  !! Write element type, dimension, degrees and number of points
 
   class(cubature), intent(in) :: self
   integer, intent(in), optional :: unit   !! Output unit, default `output_unit`
@@ -257,7 +258,7 @@ subroutine summary(self, unit)
 end subroutine summary
 
 subroutine show(self, unit)
-!! Write the summary, every abscissa and weight, and the weight sum
+  !! Write the summary, every abscissa and weight, and the weight sum
 
   class(cubature), intent(in) :: self
   integer, intent(in), optional :: unit   !! Output unit, default `output_unit`
@@ -278,7 +279,7 @@ subroutine show(self, unit)
 end subroutine show
 
 pure subroutine destroy(self)
-!! Deallocate and reset to the unset state
+  !! Deallocate and reset to the unset state
 
   class(cubature), intent(inout) :: self
 
@@ -296,7 +297,7 @@ end subroutine destroy
 !-----------------------------------------------------------------------
 
 pure subroutine tensor_rule(p, x, w)
-!! Tensor product of Gauss–Legendre rules, first direction fastest
+  !! Tensor product of Gauss–Legendre rules, first direction fastest
 
   integer, intent(in) :: p(:)                        !! Degree per direction
   real(rk), allocatable, intent(out) :: x(:,:)       !! Abscissae
@@ -327,7 +328,7 @@ pure subroutine tensor_rule(p, x, w)
 end subroutine tensor_rule
 
 pure subroutine triangle_rule(p, x, w)
-!! Rule of total degree `p` on the unit triangle
+  !! Rule of total degree `p` on the unit triangle
 
   integer, intent(in) :: p                           !! Degree of exactness
   real(rk), allocatable, intent(out) :: x(:,:)       !! Abscissae, shape `[2, n]`
@@ -373,7 +374,7 @@ pure subroutine triangle_rule(p, x, w)
 end subroutine triangle_rule
 
 pure function orbit3(a) result(x)
-!! The 3 triangle points with barycentric coordinates \((a, a, 1-2a)\) permuted
+  !! The 3 triangle points with barycentric coordinates \((a, a, 1-2a)\) permuted
 
   real(rk), intent(in) :: a
   real(rk) :: x(2,3)
@@ -383,11 +384,11 @@ pure function orbit3(a) result(x)
 end function orbit3
 
 pure subroutine collapsed_triangle(p, x, w)
-!! Collapsed Gauss–Jacobi rule of total degree `p` on the unit triangle.
-!!
-!! Maps \((u, v) \in [0,1]^2\) to \((x, y) = (u, (1-u)v)\), Jacobian
-!! \(1-u\), absorbed by Gauss–Jacobi \(\alpha = 1\) in \(u\)
-!! (Stroud 1971; Karniadakis & Sherwin 2005).
+  !! Collapsed Gauss–Jacobi rule of total degree `p` on the unit triangle.
+  !!
+  !! Maps \((u, v) \in [0,1]^2\) to \((x, y) = (u, (1-u)v)\), Jacobian
+  !! \(1-u\), absorbed by Gauss–Jacobi \(\alpha = 1\) in \(u\)
+  !! (Stroud 1971; Karniadakis & Sherwin 2005).
 
   integer, intent(in) :: p                           !! Degree of exactness
   real(rk), allocatable, intent(out) :: x(:,:)       !! Abscissae, shape `[2, n**2]`
@@ -415,7 +416,7 @@ pure subroutine collapsed_triangle(p, x, w)
 end subroutine collapsed_triangle
 
 pure subroutine tetrahedron_rule(p, x, w)
-!! Rule of total degree `p` on the unit tetrahedron
+  !! Rule of total degree `p` on the unit tetrahedron
 
   integer, intent(in) :: p                           !! Degree of exactness
   real(rk), allocatable, intent(out) :: x(:,:)       !! Abscissae, shape `[3, n]`
@@ -446,12 +447,12 @@ pure subroutine tetrahedron_rule(p, x, w)
 end subroutine tetrahedron_rule
 
 pure subroutine collapsed_tetrahedron(p, x, w)
-!! Collapsed Gauss–Jacobi rule of total degree `p` on the unit tetrahedron.
-!!
-!! Maps \((u, v, t) \in [0,1]^3\) to
-!! \((x, y, z) = (u, (1-u)v, (1-u)(1-v)t)\), Jacobian \((1-u)^2(1-v)\),
-!! absorbed by Gauss–Jacobi \(\alpha = 2\) in \(u\) and \(\alpha = 1\) in
-!! \(v\) (Stroud 1971; Karniadakis & Sherwin 2005).
+  !! Collapsed Gauss–Jacobi rule of total degree `p` on the unit tetrahedron.
+  !!
+  !! Maps \((u, v, t) \in [0,1]^3\) to
+  !! \((x, y, z) = (u, (1-u)v, (1-u)(1-v)t)\), Jacobian \((1-u)^2(1-v)\),
+  !! absorbed by Gauss–Jacobi \(\alpha = 2\) in \(u\) and \(\alpha = 1\) in
+  !! \(v\) (Stroud 1971; Karniadakis & Sherwin 2005).
 
   integer, intent(in) :: p                           !! Degree of exactness
   real(rk), allocatable, intent(out) :: x(:,:)       !! Abscissae, shape `[3, n**3]`
@@ -483,7 +484,7 @@ pure subroutine collapsed_tetrahedron(p, x, w)
 end subroutine collapsed_tetrahedron
 
 pure subroutine wedge_rule(ptri, plin, x, w)
-!! Product of a triangle rule and a Gauss–Legendre rule, triangle fastest
+  !! Product of a triangle rule and a Gauss–Legendre rule, triangle fastest
 
   integer, intent(in) :: ptri                        !! Total degree in the triangle
   integer, intent(in) :: plin                        !! Degree along the axis
@@ -512,12 +513,12 @@ end subroutine wedge_rule
 !-----------------------------------------------------------------------
 
 pure subroutine gauss_jacobi(n, alpha, x, w)
-!! `n`-point Gauss–Jacobi rule on \([-1,1]\) for the weight
-!! \((1-x)^\alpha\), exact to degree \(2n-1\). `alpha = 0` is Gauss–Legendre.
-!!
-!! Roots of \(P_n^{(\alpha,0)}\) by Newton iteration with deflation;
-!! weights \(w_i = 2^{\alpha+1} / \big((1-x_i^2)\,P_n'(x_i)^2\big)\)
-!! (Abramowitz & Stegun 1964, 25.4.33 with \(\beta = 0\)).
+  !! `n`-point Gauss–Jacobi rule on \([-1,1]\) for the weight
+  !! \((1-x)^\alpha\), exact to degree \(2n-1\). `alpha = 0` is Gauss–Legendre.
+  !!
+  !! Roots of \(P_n^{(\alpha,0)}\) by Newton iteration with deflation;
+  !! weights \(w_i = 2^{\alpha+1} / \big((1-x_i^2)\,P_n'(x_i)^2\big)\)
+  !! (Abramowitz & Stegun 1964, 25.4.33 with \(\beta = 0\)).
 
   integer, intent(in) :: n                 !! Number of points, \(\ge 1\)
   integer, intent(in) :: alpha             !! Jacobi exponent, \(\ge 0\)
@@ -546,9 +547,9 @@ pure subroutine gauss_jacobi(n, alpha, x, w)
 end subroutine gauss_jacobi
 
 pure subroutine jacobi(n, alpha, x, pn, dpn)
-!! Jacobi polynomial \(P_n^{(\alpha,0)}(x)\), \(n \ge 1\), and its
-!! derivative, by three-term recurrence (Abramowitz & Stegun 1964, 22.7.1
-!! and 22.8.1)
+  !! Jacobi polynomial \(P_n^{(\alpha,0)}(x)\), \(n \ge 1\), and its
+  !! derivative, by three-term recurrence (Abramowitz & Stegun 1964, 22.7.1
+  !! and 22.8.1)
 
   integer, intent(in) :: n                 !! Degree
   integer, intent(in) :: alpha             !! Jacobi exponent
@@ -565,7 +566,7 @@ pure subroutine jacobi(n, alpha, x, pn, dpn)
   do k = 2, n
     c = 2*k + a
     pn = ((c - 1)*(c*(c - 2)*x + a*a)*p1 - 2*(k + a - 1)*(k - 1)*c*p0) &
-       / (2*k*(k + a)*(c - 2))
+      & / (2*k*(k + a)*(c - 2))
     p0 = p1
     p1 = pn
   end do
