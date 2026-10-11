@@ -195,7 +195,8 @@ pure subroutine set_aniso(self, elm, degree)
     error stop "cubature%set: size(degree) must be 1 or the number of element directions"
   end if
 
-  call self%destroy()
+  ! No destroy here: in call q%set(q%elm, p), elm is q%elm and must not be
+  ! reset. The rule builders deallocate the arrays through intent(out).
   self%elm = elm
   self%dim = dims(elm)
   self%degree = p

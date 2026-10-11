@@ -82,6 +82,10 @@ program test_cubatures
   call q%set(CUB_LIN, 1)
   call check(q%is_valid() .and. q%dim == 1 .and. q%npoints == 1, 'set reuses q for a smaller rule')
 
+  q = cubature(CUB_TRI, 2)
+  call q%set(q%elm, 4)
+  call check(q%elm == CUB_TRI .and. q%npoints == 6, 'set(q%elm, 4) raises the degree of q')
+
   call q%destroy()
   call check(.not. q%is_valid() .and. q%elm == 0 .and. q%dim == 0 .and. q%npoints == 0, &
     'destroy resets to the unset state')
